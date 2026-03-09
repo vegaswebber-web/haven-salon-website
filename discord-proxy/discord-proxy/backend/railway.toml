@@ -1,0 +1,14 @@
+# railway.toml - Railway deployment configuration
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "node server.js"
+healthcheckPath = "/ping"
+healthcheckTimeout = 10
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Railway'in sunucuyu uyutmasını engelle
+[[services]]
+name = "discord-proxy"
