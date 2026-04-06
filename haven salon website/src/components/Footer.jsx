@@ -37,7 +37,6 @@ export default function Footer() {
               <li><Link to="/over-ons">Over Ons</Link></li>
               <li><Link to="/prijzen">Tarieven</Link></li>
               <li><Link to="/team">Team</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
 

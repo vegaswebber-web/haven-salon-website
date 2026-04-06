@@ -39,7 +39,6 @@ export default function Navbar() {
     { label: 'Team', to: '/team' },
     { label: 'Galerie', to: '/#galerie', hash: true },
     { label: 'FAQ', to: '/#faq', hash: true },
-    { label: 'Contact', to: '/contact' },
   ]
 
   function closeMenu() { setMenuOpen(false) }
