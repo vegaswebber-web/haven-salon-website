@@ -200,6 +200,25 @@
 }
 .wg-guest-btn:hover { color: var(--gold); }
 
+.wg-welcome {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.wg-welcome-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(60, 180, 80, 0.12);
+  border: 1px solid #5dc878;
+  color: #5dc878;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
 @media (max-width: 480px) {
   .wg-card {
     padding: 32px 20px 24px;

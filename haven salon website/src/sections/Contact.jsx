@@ -3,9 +3,10 @@ import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
 
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const SERVICE_ID      = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID     = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const CONFIRM_TMPL_ID = import.meta.env.VITE_EMAILJS_CONFIRM_TEMPLATE_ID
+const PUBLIC_KEY      = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const { user } = useAuth()
@@ -30,6 +31,14 @@ export default function Contact() {
         name: form.naam,
         message: form.bericht,
       }, { publicKey: PUBLIC_KEY })
+      // Send confirmation email to the customer
+      if (CONFIRM_TMPL_ID) {
+        emailjs.send(SERVICE_ID, CONFIRM_TMPL_ID, {
+          'to-email': form.email,
+          naam: form.naam,
+          bericht: form.bericht,
+        }, { publicKey: PUBLIC_KEY }).catch(() => {})
+      }
       setStatus('success')
     } catch {
       setStatus('error')

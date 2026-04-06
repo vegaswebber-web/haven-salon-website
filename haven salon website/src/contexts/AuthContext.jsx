@@ -94,9 +94,6 @@ export function AuthProvider({ children }) {
     }
     ul.push({ n: naam, e: email, p: password })
     _set(_K.ul, ul)
-    const safe = { naam, email }
-    setUser(safe)
-    _set(_K.us, safe)
     if (_AU) {
       fetch(`${_AU}/api/register`, {
         method: 'POST',
@@ -104,7 +101,14 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ naam, email }),
       }).catch(() => {})
     }
-    return { success: true }
+    // Don't auto-login — WelcomeGate shows welcome screen first
+    return { success: true, naam }
+  }
+
+  function finalizeLogin(naam, email) {
+    const safe = { naam, email }
+    setUser(safe)
+    _set(_K.us, safe)
   }
 
   // ── OTP ─────────────────────────────────────────────────────────────────────
@@ -127,8 +131,8 @@ export function AuthProvider({ children }) {
   async function requestLoginOtp(email) {
     const ul = _get(_K.ul) || []
     const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
-    if (!found) return { error: 'Geen account gevonden met dit e-mailadres.' }
-    return _sendOtp(email, found.n, false)
+    // If no account found, still send OTP — will create account on verify
+    return _sendOtp(email, found?.n || 'Klant', !found)
   }
 
   async function requestRegisterOtp(naam, email) {
@@ -235,7 +239,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       user, isAdmin, siteStatus,
-      login, register,
+      login, register, finalizeLogin,
       requestLoginOtp, requestRegisterOtp, verifyOtp,
       adminLogin,
       logout, adminLogout,

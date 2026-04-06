@@ -3,18 +3,19 @@ import { useAuth } from '../contexts/AuthContext'
 import './WelcomeGate.css'
 
 export default function WelcomeGate({ onGuest }) {
-  const [mode, setMode] = useState('login') // login | register | otp-email | otp-code
+  const [mode, setMode] = useState('login') // login | register | otp-email | otp-code | welcome
 
-  const [email, setEmail]     = useState('')
-  const [pw, setPw]           = useState('')
-  const [naam, setNaam]       = useState('')
-  const [pw2, setPw2]         = useState('')
-  const [code, setCode]       = useState('')
+  const [email, setEmail]         = useState('')
+  const [pw, setPw]               = useState('')
+  const [naam, setNaam]           = useState('')
+  const [pw2, setPw2]             = useState('')
+  const [code, setCode]           = useState('')
+  const [welcomeNaam, setWelcomeNaam] = useState('')
 
   const [msg, setMsg]         = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const { login, register, requestLoginOtp, verifyOtp } = useAuth()
+  const { login, register, finalizeLogin, requestLoginOtp, verifyOtp } = useAuth()
 
   function go(m) { setMode(m); setMsg(null) }
 
@@ -30,7 +31,12 @@ export default function WelcomeGate({ onGuest }) {
     e.preventDefault()
     if (pw !== pw2) return setMsg({ type: 'error', text: 'Wachtwoorden komen niet overeen.' })
     const res = await register(naam, email, pw)
-    if (res.error) setMsg({ type: 'error', text: res.error })
+    if (res.error) {
+      setMsg({ type: 'error', text: res.error })
+    } else {
+      setWelcomeNaam(res.naam || naam)
+      go('welcome')
+    }
   }
 
   // ── OTP: versturen ────────────────────────────────────────────────────────
@@ -66,6 +72,23 @@ export default function WelcomeGate({ onGuest }) {
         </div>
 
         {msg && <div className={`wg-msg wg-msg--${msg.type}`}>{msg.text}</div>}
+
+        {/* ── Welkom ── */}
+        {mode === 'welcome' && (
+          <div className="wg-welcome">
+            <div className="wg-welcome-icon">✓</div>
+            <h2 className="wg-title">Welkom, {welcomeNaam}!</h2>
+            <p className="wg-note" style={{ marginBottom: '24px' }}>
+              Je account is aangemaakt. Geniet van Haven Salon.
+            </p>
+            <button
+              className="wg-btn-primary"
+              onClick={() => finalizeLogin(welcomeNaam, email)}
+            >
+              Ga verder →
+            </button>
+          </div>
+        )}
 
         {/* ── Login ── */}
         {mode === 'login' && (
@@ -168,10 +191,12 @@ export default function WelcomeGate({ onGuest }) {
           </>
         )}
 
-        {/* Gast knop */}
-        <button className="wg-guest-btn" onClick={onGuest}>
-          Verder gaan als gast
-        </button>
+        {/* Gast knop — verberg op welkom scherm */}
+        {mode !== 'welcome' && (
+          <button className="wg-guest-btn" onClick={onGuest}>
+            Verder gaan als gast
+          </button>
+        )}
       </div>
     </div>
   )
