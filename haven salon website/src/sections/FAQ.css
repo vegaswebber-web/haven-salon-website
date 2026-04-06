@@ -8,6 +8,10 @@
   margin-bottom: 56px;
 }
 
+.faq-header .divider {
+  margin: 16px auto 24px;
+}
+
 .faq-list {
   max-width: 760px;
   margin: 0 auto;

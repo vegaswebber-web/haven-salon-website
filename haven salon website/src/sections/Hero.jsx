@@ -29,7 +29,7 @@ export default function Hero() {
         <div className="hero-visual">
           <div className="hero-img-wrap">
             <img
-              src="/barber.png"
+              src="/halimm.jpg"
               alt="Abdulla — Haven Salon"
               className="hero-photo"
             />

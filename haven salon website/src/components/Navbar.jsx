@@ -37,6 +37,8 @@ export default function Navbar() {
     { label: 'Over Ons', to: '/over-ons' },
     { label: 'Tarieven', to: '/prijzen' },
     { label: 'Team', to: '/team' },
+    { label: 'Galerie', to: '/#galerie', hash: true },
+    { label: 'FAQ', to: '/#faq', hash: true },
     { label: 'Contact', to: '/contact' },
   ]
 
@@ -64,7 +66,9 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <nav className="navbar-links">
-            {links.map(l => (
+            {links.map(l => l.hash ? (
+              <a key={l.to} href={l.to}>{l.label}</a>
+            ) : (
               <Link
                 key={l.to}
                 to={l.to}
@@ -115,7 +119,9 @@ export default function Navbar() {
       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
         <button className="mobile-menu-close" onClick={closeMenu} aria-label="Sluiten">✕</button>
         <nav className="mobile-menu-links">
-          {links.map(l => (
+          {links.map(l => l.hash ? (
+            <a key={l.to} href={l.to} onClick={closeMenu}>{l.label}</a>
+          ) : (
             <Link
               key={l.to}
               to={l.to}

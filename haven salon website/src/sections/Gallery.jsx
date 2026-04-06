@@ -1,5 +1,14 @@
 import './Gallery.css'
 
+const photos = [
+  { src: '/gallery/g1.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/gallery/g2.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/gallery/g3.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/gallery/g4.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/gallery/g5.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/gallery/g6.jpg', alt: 'Knipwerk Haven Salon' },
+]
+
 export default function Gallery() {
   return (
     <section id="galerie" className="gallery">
@@ -9,15 +18,24 @@ export default function Gallery() {
           <h2 className="section-title">Galerie</h2>
           <div className="divider" />
           <p className="section-subtitle">
-            Een beeld zegt meer dan duizend woorden. Binnenkort vind je hier
-            een selectie van ons werk.
+            Een beeld zegt meer dan duizend woorden. Bekijk een selectie van ons werk.
           </p>
         </div>
 
         <div className="gallery-grid">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="gallery-placeholder">
-              <div className="gallery-placeholder-inner">
+          {photos.map((photo, i) => (
+            <div key={i} className="gallery-item">
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                className="gallery-img"
+                loading="lazy"
+                onError={e => {
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+              <div className="gallery-placeholder-inner" style={{ display: 'none' }}>
                 <span className="gallery-placeholder-icon">✂</span>
                 <span className="gallery-placeholder-text">Foto binnenkort</span>
               </div>
