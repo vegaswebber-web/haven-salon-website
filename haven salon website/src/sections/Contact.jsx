@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import emailjs from '@emailjs/browser'
+import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
 
 const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
@@ -7,7 +8,13 @@ const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
-  const [form, setForm] = useState({ naam: '', email: '', telefoon: '', bericht: '' })
+  const { user } = useAuth()
+  const [form, setForm] = useState({
+    naam:     user?.naam  || '',
+    email:    user?.email || '',
+    telefoon: '',
+    bericht:  '',
+  })
   const [status, setStatus] = useState('idle') // idle | loading | success | error
 
   function handleChange(e) {

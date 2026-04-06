@@ -3,14 +3,11 @@ import { useAuth } from '../contexts/AuthContext'
 import './AdminWidget.css'
 
 export default function AdminWidget({ onClose }) {
-  const { siteStatus, setRemoteStatus, adminLogout } = useAuth()
+  const { siteStatus, setRemoteStatus, adminLogout, getUsers, deleteUser: ctxDelete } = useAuth()
   const [loading, setLoading] = useState(null)
   const [msg, setMsg] = useState(null)
   const [tab, setTab] = useState('status')
-
-  const [users, setUsers] = useState(() =>
-    JSON.parse(localStorage.getItem('haven_users') || '[]')
-  )
+  const [users, setUsers] = useState(() => getUsers())
 
   async function handleSetStatus(status) {
     setLoading(status)
@@ -21,12 +18,8 @@ export default function AdminWidget({ onClose }) {
   }
 
   function deleteUser(email) {
-    const updated = users.filter(u => u.email !== email)
-    setUsers(updated)
-    localStorage.setItem('haven_users', JSON.stringify(updated))
-    // Also log out if this is the active user
-    const active = JSON.parse(localStorage.getItem('haven_user') || 'null')
-    if (active?.email === email) localStorage.removeItem('haven_user')
+    ctxDelete(email)
+    setUsers(prev => prev.filter(u => u.email !== email))
   }
 
   return (

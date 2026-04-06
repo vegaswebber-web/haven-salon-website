@@ -2,93 +2,103 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 
 const AuthContext = createContext(null)
-const API_URL = import.meta.env.VITE_API_URL || ''
+const _AU = import.meta.env.VITE_API_URL || ''
 
-const SERVICE_ID     = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const OTP_TEMPLATE   = import.meta.env.VITE_EMAILJS_OTP_TEMPLATE_ID
-const PUBLIC_KEY     = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-function generateOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000))
+// ── Obfuscated storage keys ──────────────────────────────────────────────────
+const _K = {
+  ul: '_hx9k',   // users list
+  us: '_hx1s',   // current session user
+  at: '_hx7t',   // admin token
+  ss: '_hx4v',   // site status
+  ot: '_hx2p',   // otp data
 }
 
+// ── Encode / decode (base64 + URI) ───────────────────────────────────────────
+function _enc(v) {
+  try { return btoa(unescape(encodeURIComponent(JSON.stringify(v)))) } catch { return null }
+}
+function _dec(s) {
+  try { return JSON.parse(decodeURIComponent(escape(atob(s)))) } catch { return null }
+}
+function _get(k)     { const r = localStorage.getItem(k); return r ? _dec(r) : null }
+function _set(k, v)  { localStorage.setItem(k, _enc(v)) }
+function _del(k)     { localStorage.removeItem(k) }
+
+// ── EmailJS ───────────────────────────────────────────────────────────────────
+const _SID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const _TID = import.meta.env.VITE_EMAILJS_OTP_TEMPLATE_ID
+const _PK  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+function _otp() { return String(Math.floor(100000 + Math.random() * 900000)) }
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('haven_user')) } catch { return null }
+  const [user, setUser] = useState(() => _get(_K.us))
+  const [_at, _setAt]   = useState(() => {
+    const t = localStorage.getItem(_K.at)
+    return t ? _dec(t) : ''
   })
-  const [adminToken, setAdminToken] = useState(() => localStorage.getItem('haven_admin_token') || '')
   const [isAdmin, setIsAdmin] = useState(false)
   const [siteStatus, setSiteStatus] = useState(() => {
-    if (!API_URL) return localStorage.getItem('haven_site_status') || 'open'
+    if (!_AU) return _get(_K.ss) || 'open'
     return null
   })
 
-  // Fetch site status from API on mount + poll every 15 seconds
+  // Poll site status
   useEffect(() => {
-    if (!API_URL) return
-    function checkStatus() {
-      fetch(`${API_URL}/api/status`)
+    if (!_AU) return
+    function _cs() {
+      fetch(`${_AU}/api/status`)
         .then(r => r.json())
         .then(d => setSiteStatus(d.status || 'open'))
         .catch(() => setSiteStatus('open'))
     }
-    checkStatus()
-    const interval = setInterval(checkStatus, 15000)
-    return () => clearInterval(interval)
+    _cs()
+    const _iv = setInterval(_cs, 15000)
+    return () => clearInterval(_iv)
   }, [])
 
+  // Verify admin token on load
   useEffect(() => {
-    if (!adminToken) return
-    const LOCAL_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
-    if (!API_URL) {
-      if (adminToken === LOCAL_ADMIN_PASSWORD) {
-        setIsAdmin(true)
-      } else {
-        setAdminToken('')
-        localStorage.removeItem('haven_admin_token')
-      }
+    if (!_at) return
+    const _lp = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
+    if (!_AU) {
+      if (_at === _lp) { setIsAdmin(true) }
+      else { _setAt(''); _del(_K.at) }
       return
     }
-    fetch(`${API_URL}/api/appointments`, { headers: { Authorization: `Bearer ${adminToken}` } })
+    fetch(`${_AU}/api/appointments`, { headers: { Authorization: `Bearer ${_at}` } })
       .then(r => {
         if (r.ok) {
           setIsAdmin(true)
-          fetch(`${API_URL}/api/status`).then(sr => sr.json()).then(d => setSiteStatus(d.status)).catch(() => {})
-        } else {
-          setAdminToken('')
-          localStorage.removeItem('haven_admin_token')
-        }
+          fetch(`${_AU}/api/status`).then(sr => sr.json()).then(d => setSiteStatus(d.status)).catch(() => {})
+        } else { _setAt(''); _del(_K.at) }
       })
       .catch(() => {})
   }, [])
 
-  // ─── Password login ────────────────────────────────────────────────────────
-
+  // ── Password login ──────────────────────────────────────────────────────────
   function login(email, password) {
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    const found = users.find(
-      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    )
+    const ul = _get(_K.ul) || []
+    const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase() && u.p === password)
     if (!found) return { error: 'E-mail of wachtwoord is onjuist.' }
-    const safe = { naam: found.naam, email: found.email }
+    const safe = { naam: found.n, email: found.e }
     setUser(safe)
-    localStorage.setItem('haven_user', JSON.stringify(safe))
+    _set(_K.us, safe)
     return { success: true }
   }
 
   async function register(naam, email, password) {
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    const ul = _get(_K.ul) || []
+    if (ul.find(u => u.e.toLowerCase() === email.toLowerCase())) {
       return { error: 'Dit e-mailadres is al in gebruik.' }
     }
-    const newUser = { naam, email, password }
-    users.push(newUser)
-    localStorage.setItem('haven_users', JSON.stringify(users))
+    ul.push({ n: naam, e: email, p: password })
+    _set(_K.ul, ul)
     const safe = { naam, email }
     setUser(safe)
-    localStorage.setItem('haven_user', JSON.stringify(safe))
-    if (API_URL) {
-      fetch(`${API_URL}/api/register`, {
+    _set(_K.us, safe)
+    if (_AU) {
+      fetch(`${_AU}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ naam, email }),
@@ -97,106 +107,83 @@ export function AuthProvider({ children }) {
     return { success: true }
   }
 
-  // ─── OTP helpers ───────────────────────────────────────────────────────────
-
-  async function _sendOtp(email, naam, isRegistration) {
-    const code    = generateOtp()
-    const expires = Date.now() + 10 * 60 * 1000   // 10 minutes
-    localStorage.setItem('haven_otp', JSON.stringify({ email, code, expires, naam, isRegistration }))
-
+  // ── OTP ─────────────────────────────────────────────────────────────────────
+  async function _sendOtp(email, naam, isReg) {
+    const code = _otp()
+    _set(_K.ot, { e: email, c: code, x: Date.now() + 600000, n: naam, r: isReg })
     try {
-      await emailjs.send(SERVICE_ID, OTP_TEMPLATE, {
+      await emailjs.send(_SID, _TID, {
         'to-email': email,
         naam:       naam || 'Klant',
         otp_code:   code,
-      }, PUBLIC_KEY)
+      }, _PK)
       return { success: true }
     } catch {
-      localStorage.removeItem('haven_otp')
+      _del(_K.ot)
       return { error: 'Kon e-mail niet versturen. Probeer het opnieuw.' }
     }
   }
 
   async function requestLoginOtp(email) {
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    const found = users.find(u => u.email.toLowerCase() === email.toLowerCase())
+    const ul = _get(_K.ul) || []
+    const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
     if (!found) return { error: 'Geen account gevonden met dit e-mailadres.' }
-    return _sendOtp(email, found.naam, false)
+    return _sendOtp(email, found.n, false)
   }
 
   async function requestRegisterOtp(naam, email) {
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    const ul = _get(_K.ul) || []
+    if (ul.find(u => u.e.toLowerCase() === email.toLowerCase())) {
       return { error: 'Dit e-mailadres is al in gebruik.' }
     }
     return _sendOtp(email, naam, true)
   }
 
   function verifyOtp(email, code) {
-    const raw = localStorage.getItem('haven_otp')
-    if (!raw) return { error: 'Geen code gevonden. Vraag een nieuwe aan.' }
-    const otpData = JSON.parse(raw)
-
-    if (otpData.email.toLowerCase() !== email.toLowerCase()) {
-      return { error: 'Ongeldig verzoek.' }
-    }
-    if (Date.now() > otpData.expires) {
-      localStorage.removeItem('haven_otp')
-      return { error: 'Code verlopen. Vraag een nieuwe aan.' }
-    }
-    if (otpData.code !== String(code).trim()) {
-      return { error: 'Onjuiste code. Controleer uw e-mail.' }
-    }
-
-    localStorage.removeItem('haven_otp')
-
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    let found = users.find(u => u.email.toLowerCase() === email.toLowerCase())
-
-    if (!found && otpData.isRegistration) {
-      found = { naam: otpData.naam, email }
-      users.push(found)
-      localStorage.setItem('haven_users', JSON.stringify(users))
-      // Send welcome email via Worker if configured
-      if (API_URL) {
-        fetch(`${API_URL}/api/register`, {
+    const od = _get(_K.ot)
+    if (!od) return { error: 'Geen code gevonden. Vraag een nieuwe aan.' }
+    if (od.e.toLowerCase() !== email.toLowerCase()) return { error: 'Ongeldig verzoek.' }
+    if (Date.now() > od.x) { _del(_K.ot); return { error: 'Code verlopen. Vraag een nieuwe aan.' } }
+    if (od.c !== String(code).trim()) return { error: 'Onjuiste code. Controleer uw e-mail.' }
+    _del(_K.ot)
+    const ul = _get(_K.ul) || []
+    let found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
+    if (!found && od.r) {
+      found = { n: od.n, e: email, p: '' }
+      ul.push(found)
+      _set(_K.ul, ul)
+      if (_AU) {
+        fetch(`${_AU}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ naam: found.naam, email }),
+          body: JSON.stringify({ naam: od.n, email }),
         }).catch(() => {})
       }
     }
-
     if (!found) return { error: 'Account niet gevonden.' }
-
-    const safe = { naam: found.naam, email: found.email }
+    const safe = { naam: found.n, email: found.e }
     setUser(safe)
-    localStorage.setItem('haven_user', JSON.stringify(safe))
+    _set(_K.us, safe)
     return { success: true }
   }
 
-  // ─── Admin ─────────────────────────────────────────────────────────────────
-
+  // ── Admin ───────────────────────────────────────────────────────────────────
   async function adminLogin(password) {
-    const LOCAL_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
-    if (!API_URL) {
-      if (password === LOCAL_ADMIN_PASSWORD) {
-        setAdminToken(password)
-        setIsAdmin(true)
-        localStorage.setItem('haven_admin_token', password)
+    const _lp = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
+    if (!_AU) {
+      if (password === _lp) {
+        _setAt(password); setIsAdmin(true); _set(_K.at, password)
         return { success: true }
       }
       return { error: 'Verkeerd wachtwoord' }
     }
     try {
-      const r = await fetch(`${API_URL}/api/appointments`, {
+      const r = await fetch(`${_AU}/api/appointments`, {
         headers: { Authorization: `Bearer ${password}` },
       })
       if (r.ok) {
-        setAdminToken(password)
-        setIsAdmin(true)
-        localStorage.setItem('haven_admin_token', password)
-        const sr = await fetch(`${API_URL}/api/status`)
+        _setAt(password); setIsAdmin(true); _set(_K.at, password)
+        const sr = await fetch(`${_AU}/api/status`)
         const sd = await sr.json()
         setSiteStatus(sd.status)
         return { success: true }
@@ -207,68 +194,42 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // ─── Site status ───────────────────────────────────────────────────────────
-
+  // ── Site status ─────────────────────────────────────────────────────────────
   async function fetchSiteStatus() {
-    if (!API_URL) {
-      const local = localStorage.getItem('haven_site_status') || 'open'
-      setSiteStatus(local)
-      return
-    }
-    try {
-      const r = await fetch(`${API_URL}/api/status`)
-      const d = await r.json()
-      setSiteStatus(d.status)
-    } catch {}
+    if (!_AU) { setSiteStatus(_get(_K.ss) || 'open'); return }
+    try { const r = await fetch(`${_AU}/api/status`); const d = await r.json(); setSiteStatus(d.status) } catch {}
   }
 
-  function setStatusLocal(status) {
-    setSiteStatus(status)
-    localStorage.setItem('haven_site_status', status)
-  }
+  function _setLocal(s) { setSiteStatus(s); _set(_K.ss, s) }
 
   async function toggleSiteStatus() {
-    if (!API_URL) {
-      const next = siteStatus === 'open' ? 'coming_soon' : 'open'
-      setStatusLocal(next)
-      return next
-    }
-    if (!adminToken) return null
+    if (!_AU) { const n = siteStatus === 'open' ? 'coming_soon' : 'open'; _setLocal(n); return n }
+    if (!_at) return null
     try {
-      const r = await fetch(`${API_URL}/api/toggle`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${adminToken}` },
-      })
-      const d = await r.json()
-      setSiteStatus(d.status)
-      return d.status
-    } catch {
-      return null
-    }
+      const r = await fetch(`${_AU}/api/toggle`, { method: 'POST', headers: { Authorization: `Bearer ${_at}` } })
+      const d = await r.json(); setSiteStatus(d.status); return d.status
+    } catch { return null }
   }
 
   async function setRemoteStatus(status) {
-    if (!API_URL) {
-      setStatusLocal(status)
-      return status
-    }
-    if (siteStatus !== status) {
-      return toggleSiteStatus()
-    }
+    if (!_AU) { _setLocal(status); return status }
+    if (siteStatus !== status) return toggleSiteStatus()
     return status
   }
 
-  // ─── Session ───────────────────────────────────────────────────────────────
+  // ── Session ─────────────────────────────────────────────────────────────────
+  function logout() { setUser(null); _del(_K.us) }
 
-  function logout() {
-    setUser(null)
-    localStorage.removeItem('haven_user')
-  }
+  function adminLogout() { _setAt(''); setIsAdmin(false); _del(_K.at) }
 
-  function adminLogout() {
-    setAdminToken('')
-    setIsAdmin(false)
-    localStorage.removeItem('haven_admin_token')
+  // ── Read users for admin panel ───────────────────────────────────────────────
+  function getUsers() { return (_get(_K.ul) || []).map(u => ({ naam: u.n, email: u.e, password: u.p })) }
+
+  function deleteUser(email) {
+    const ul = (_get(_K.ul) || []).filter(u => u.e !== email)
+    _set(_K.ul, ul)
+    const cur = _get(_K.us)
+    if (cur?.email === email) { setUser(null); _del(_K.us) }
   }
 
   return (
@@ -279,6 +240,7 @@ export function AuthProvider({ children }) {
       adminLogin,
       logout, adminLogout,
       fetchSiteStatus, toggleSiteStatus, setRemoteStatus,
+      getUsers, deleteUser,
     }}>
       {children}
     </AuthContext.Provider>

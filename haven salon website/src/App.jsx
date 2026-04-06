@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { BookingProvider, useBooking } from './contexts/BookingContext'
@@ -14,6 +14,7 @@ import ContactPage from './pages/ContactPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
 import WhatsAppButton from './components/WhatsAppButton'
+import WelcomeGate from './components/WelcomeGate'
 import './App.css'
 
 function ScrollReveal() {
@@ -37,8 +38,11 @@ function ScrollReveal() {
 }
 
 function SiteContent() {
-  const { siteStatus, isAdmin } = useAuth()
+  const { siteStatus, isAdmin, user } = useAuth()
   const { open: bookingOpen } = useBooking()
+  const [isGuest, setIsGuest] = useState(() => !!sessionStorage.getItem('_hxg'))
+
+  function handleGuest() { sessionStorage.setItem('_hxg', '1'); setIsGuest(true) }
 
   // Admin can always preview the full site via ?preview=1
   const params = new URLSearchParams(window.location.search)
@@ -68,6 +72,7 @@ function SiteContent() {
 
   return (
     <>
+      {!user && !isGuest && <WelcomeGate onGuest={handleGuest} />}
       <ScrollReveal />
       <Navbar />
       <main>
