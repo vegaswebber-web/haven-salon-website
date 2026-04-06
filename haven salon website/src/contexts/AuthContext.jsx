@@ -1,7 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 
 const AuthContext = createContext(null)
 const API_URL = import.meta.env.VITE_API_URL || ''
+
+const SERVICE_ID     = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const OTP_TEMPLATE   = import.meta.env.VITE_EMAILJS_OTP_TEMPLATE_ID
+const PUBLIC_KEY     = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+function generateOtp() {
+  return String(Math.floor(100000 + Math.random() * 900000))
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -10,7 +19,6 @@ export function AuthProvider({ children }) {
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('haven_admin_token') || '')
   const [isAdmin, setIsAdmin] = useState(false)
   const [siteStatus, setSiteStatus] = useState(() => {
-    // Local mode: read from localStorage; API mode: will be fetched
     if (!API_URL) return localStorage.getItem('haven_site_status') || 'open'
     return null
   })
@@ -33,7 +41,6 @@ export function AuthProvider({ children }) {
     if (!adminToken) return
     const LOCAL_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
     if (!API_URL) {
-      // Local mode: verify stored token against local password
       if (adminToken === LOCAL_ADMIN_PASSWORD) {
         setIsAdmin(true)
       } else {
@@ -55,44 +62,88 @@ export function AuthProvider({ children }) {
       .catch(() => {})
   }, [])
 
-  function login(email, password) {
-    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
-    const found = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password)
-    if (found) {
-      const safe = { naam: found.naam, email: found.email }
-      setUser(safe)
-      localStorage.setItem('haven_user', JSON.stringify(safe))
+  // ─── OTP helpers ───────────────────────────────────────────────────────────
+
+  async function _sendOtp(email, naam, isRegistration) {
+    const code    = generateOtp()
+    const expires = Date.now() + 10 * 60 * 1000   // 10 minutes
+    localStorage.setItem('haven_otp', JSON.stringify({ email, code, expires, naam, isRegistration }))
+
+    try {
+      await emailjs.send(SERVICE_ID, OTP_TEMPLATE, {
+        to_email:  email,
+        naam:      naam || 'Klant',
+        passcode:  code,
+      }, PUBLIC_KEY)
       return { success: true }
+    } catch {
+      localStorage.removeItem('haven_otp')
+      return { error: 'Kon e-mail niet versturen. Probeer het opnieuw.' }
     }
-    return { error: 'E-mail of wachtwoord is onjuist' }
   }
 
-  async function register(naam, email, password) {
+  async function requestLoginOtp(email) {
+    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
+    const found = users.find(u => u.email.toLowerCase() === email.toLowerCase())
+    if (!found) return { error: 'Geen account gevonden met dit e-mailadres.' }
+    return _sendOtp(email, found.naam, false)
+  }
+
+  async function requestRegisterOtp(naam, email) {
     const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
     if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { error: 'Dit e-mailadres is al in gebruik' }
+      return { error: 'Dit e-mailadres is al in gebruik.' }
     }
-    users.push({ naam, email, password })
-    localStorage.setItem('haven_users', JSON.stringify(users))
-    const safe = { naam, email }
-    setUser(safe)
-    localStorage.setItem('haven_user', JSON.stringify(safe))
-    // Send welcome email via Worker (if configured)
-    if (API_URL) {
-      try {
-        await fetch(`${API_URL}/api/register`, {
+    return _sendOtp(email, naam, true)
+  }
+
+  function verifyOtp(email, code) {
+    const raw = localStorage.getItem('haven_otp')
+    if (!raw) return { error: 'Geen code gevonden. Vraag een nieuwe aan.' }
+    const otpData = JSON.parse(raw)
+
+    if (otpData.email.toLowerCase() !== email.toLowerCase()) {
+      return { error: 'Ongeldig verzoek.' }
+    }
+    if (Date.now() > otpData.expires) {
+      localStorage.removeItem('haven_otp')
+      return { error: 'Code verlopen. Vraag een nieuwe aan.' }
+    }
+    if (otpData.code !== String(code).trim()) {
+      return { error: 'Onjuiste code. Controleer uw e-mail.' }
+    }
+
+    localStorage.removeItem('haven_otp')
+
+    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
+    let found = users.find(u => u.email.toLowerCase() === email.toLowerCase())
+
+    if (!found && otpData.isRegistration) {
+      found = { naam: otpData.naam, email }
+      users.push(found)
+      localStorage.setItem('haven_users', JSON.stringify(users))
+      // Send welcome email via Worker if configured
+      if (API_URL) {
+        fetch(`${API_URL}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ naam, email }),
-        })
-      } catch {}
+          body: JSON.stringify({ naam: found.naam, email }),
+        }).catch(() => {})
+      }
     }
+
+    if (!found) return { error: 'Account niet gevonden.' }
+
+    const safe = { naam: found.naam, email: found.email }
+    setUser(safe)
+    localStorage.setItem('haven_user', JSON.stringify(safe))
     return { success: true }
   }
 
+  // ─── Admin ─────────────────────────────────────────────────────────────────
+
   async function adminLogin(password) {
     const LOCAL_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
-    // Local mode: no API configured
     if (!API_URL) {
       if (password === LOCAL_ADMIN_PASSWORD) {
         setAdminToken(password)
@@ -120,6 +171,8 @@ export function AuthProvider({ children }) {
       return { error: 'Verbindingsfout. Controleer de Worker URL.' }
     }
   }
+
+  // ─── Site status ───────────────────────────────────────────────────────────
 
   async function fetchSiteStatus() {
     if (!API_URL) {
@@ -164,12 +217,13 @@ export function AuthProvider({ children }) {
       setStatusLocal(status)
       return status
     }
-    // If API is available, use toggle until we reach desired status
     if (siteStatus !== status) {
       return toggleSiteStatus()
     }
     return status
   }
+
+  // ─── Session ───────────────────────────────────────────────────────────────
 
   function logout() {
     setUser(null)
@@ -185,7 +239,8 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       user, isAdmin, siteStatus,
-      login, register, adminLogin,
+      requestLoginOtp, requestRegisterOtp, verifyOtp,
+      adminLogin,
       logout, adminLogout,
       fetchSiteStatus, toggleSiteStatus, setRemoteStatus,
     }}>
