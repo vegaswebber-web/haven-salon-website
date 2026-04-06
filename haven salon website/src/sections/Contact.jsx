@@ -1,11 +1,6 @@
 import { useState } from 'react'
-import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
-
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const { user } = useAuth()
@@ -21,19 +16,14 @@ export default function Contact() {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
-    setStatus('loading')
-    try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-        ...form,
-        name: form.naam,
-        message: form.bericht,
-      }, { publicKey: PUBLIC_KEY })
-      setStatus('success')
-    } catch {
-      setStatus('error')
-    }
+    // Redirect to WhatsApp with the message
+    const tekst = encodeURIComponent(
+      `Naam: ${form.naam}\nE-mail: ${form.email}\nTelefoon: ${form.telefoon || '-'}\n\n${form.bericht}`
+    )
+    window.open(`https://wa.me/31684700480?text=${tekst}`, '_blank')
+    setStatus('success')
   }
 
   return (
@@ -96,7 +86,7 @@ export default function Contact() {
               <div className="contact-success">
                 <div className="success-icon">✓</div>
                 <h3>Bedankt!</h3>
-                <p>We nemen zo snel mogelijk contact met je op.</p>
+                <p>Je bericht is doorgestuurd via WhatsApp. We nemen zo snel mogelijk contact met je op.</p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -118,11 +108,8 @@ export default function Contact() {
                   <label htmlFor="bericht">Gewenste dienst / bericht *</label>
                   <textarea id="bericht" name="bericht" value={form.bericht} onChange={handleChange} required placeholder="Bijv: knippen + baard, zaterdag ochtend" rows={5} />
                 </div>
-                {status === 'error' && (
-                  <p className="form-error">Er ging iets mis. Probeer het opnieuw of bel ons.</p>
-                )}
-                <button type="submit" className="btn-primary" disabled={status === 'loading'}>
-                  {status === 'loading' ? 'Versturen...' : 'Verstuur aanvraag'}
+                <button type="submit" className="btn-primary">
+                  Verstuur via WhatsApp
                 </button>
               </form>
             )}
