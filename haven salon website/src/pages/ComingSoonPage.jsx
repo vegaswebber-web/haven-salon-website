@@ -26,7 +26,9 @@ export default function ComingSoonPage() {
       email: form.email,
       telefoon: '-',
       bericht: 'Wil op de hoogte gehouden worden bij opening.',
-    }, PUBLIC_KEY).catch(() => {})
+      name: form.naam,
+      message: 'Wil op de hoogte gehouden worden bij opening.',
+    }, { publicKey: PUBLIC_KEY }).catch(() => {})
     setSent(true)
   }
 

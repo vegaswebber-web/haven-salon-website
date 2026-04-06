@@ -22,7 +22,7 @@ export default function Contact() {
         ...form,
         name: form.naam,
         message: form.bericht,
-      }, PUBLIC_KEY)
+      }, { publicKey: PUBLIC_KEY })
       setStatus('success')
     } catch {
       setStatus('error')
