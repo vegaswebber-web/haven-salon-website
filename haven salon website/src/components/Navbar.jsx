@@ -27,6 +27,11 @@ export default function Navbar() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Over Ons', to: '/over-ons' },

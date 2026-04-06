@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { BookingProvider, useBooking } from './contexts/BookingContext'
@@ -12,6 +13,26 @@ import TeamPage from './pages/TeamPage'
 import ContactPage from './pages/ContactPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import './App.css'
+
+function ScrollReveal() {
+  const location = useLocation()
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll('section'))
+    sections.slice(1).forEach(s => s.classList.add('reveal'))
+    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid')
+    cards.forEach(c => c.classList.add('reveal'))
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) }
+      })
+    }, { threshold: 0.08 })
+
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [location.pathname])
+  return null
+}
 
 function SiteContent() {
   const { siteStatus, isAdmin } = useAuth()
@@ -45,6 +66,7 @@ function SiteContent() {
 
   return (
     <>
+      <ScrollReveal />
       <Navbar />
       <main>
         <Routes>

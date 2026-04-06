@@ -117,13 +117,16 @@ img {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
 }
 
 .btn-primary:hover {
   background-color: var(--gold-light);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(201,169,110,0.25);
 }
+
+.btn-primary:active { transform: translateY(-1px); }
 
 .btn-outline {
   display: inline-block;
@@ -143,7 +146,24 @@ img {
 .btn-outline:hover {
   background-color: var(--gold);
   color: #0f0f0f;
+  box-shadow: 0 8px 24px rgba(201,169,110,0.2);
+  transform: translateY(-2px);
 }
+
+/* ── Scroll Reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(.4,0,.2,1),
+              transform 0.65s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
 
 .divider {
   width: 50px;
