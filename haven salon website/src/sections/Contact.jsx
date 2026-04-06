@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import './Contact.css'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const [form, setForm] = useState({ naam: '', email: '', telefoon: '', bericht: '' })
@@ -15,14 +18,7 @@ export default function Contact() {
     e.preventDefault()
     setStatus('loading')
     try {
-      if (API_URL) {
-        const res = await fetch(`${API_URL}/api/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        })
-        if (!res.ok) throw new Error()
-      }
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, form, PUBLIC_KEY)
       setStatus('success')
     } catch {
       setStatus('error')
