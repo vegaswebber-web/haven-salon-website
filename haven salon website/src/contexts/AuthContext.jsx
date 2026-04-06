@@ -71,9 +71,9 @@ export function AuthProvider({ children }) {
 
     try {
       await emailjs.send(SERVICE_ID, OTP_TEMPLATE, {
-        to_email:  email,
-        naam:      naam || 'Klant',
-        passcode:  code,
+        'to-email': email,
+        naam:       naam || 'Klant',
+        otp_code:   code,
       }, PUBLIC_KEY)
       return { success: true }
     } catch {
