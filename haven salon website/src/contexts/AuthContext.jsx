@@ -27,6 +27,7 @@ function _del(k)     { localStorage.removeItem(k) }
 // ── EmailJS ───────────────────────────────────────────────────────────────────
 const _SID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const _TID = import.meta.env.VITE_EMAILJS_OTP_TEMPLATE_ID
+const _WID = import.meta.env.VITE_EMAILJS_WELCOME_TEMPLATE_ID
 const _PK  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 function _otp() { return String(Math.floor(100000 + Math.random() * 900000)) }
@@ -100,6 +101,13 @@ export function AuthProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ naam, email }),
       }).catch(() => {})
+    }
+    // Send welcome email
+    if (_WID) {
+      emailjs.send(_SID, _WID, {
+        'to-email': email,
+        naam,
+      }, _PK).catch(() => {})
     }
     // Don't auto-login — WelcomeGate shows welcome screen first
     return { success: true, naam }

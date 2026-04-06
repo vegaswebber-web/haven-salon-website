@@ -15,7 +15,7 @@ export default function Contact() {
     telefoon: '',
     bericht:  '',
   })
-  const [status, setStatus] = useState('idle') // idle | loading | success | error
+  const [status, setStatus] = useState('idle')
 
   function handleChange(e) {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }))
