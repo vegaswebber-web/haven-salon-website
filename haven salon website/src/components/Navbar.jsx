@@ -40,6 +40,8 @@ export default function Navbar() {
     { label: 'Contact', to: '/contact' },
   ]
 
+  function closeMenu() { setMenuOpen(false) }
+
   return (
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -60,7 +62,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+          {/* Desktop nav */}
+          <nav className="navbar-links">
             {links.map(l => (
               <Link
                 key={l.to}
@@ -72,7 +75,6 @@ export default function Navbar() {
             ))}
             <ThemeToggle />
 
-            {/* Admin icon — only when admin is logged in */}
             {isAdmin && (
               <button
                 className="navbar-admin-btn"
@@ -83,7 +85,6 @@ export default function Navbar() {
               </button>
             )}
 
-            {/* Login / user avatar button */}
             <button
               className="navbar-auth-btn"
               onClick={() => setAuthOpen(true)}
@@ -109,6 +110,47 @@ export default function Navbar() {
           </button>
         </div>
       </header>
+
+      {/* Mobile menu — rendered OUTSIDE header to avoid z-index stacking context */}
+      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
+        <button className="mobile-menu-close" onClick={closeMenu} aria-label="Sluiten">✕</button>
+        <nav className="mobile-menu-links">
+          {links.map(l => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={location.pathname === l.to ? 'active' : ''}
+              onClick={closeMenu}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="mobile-menu-actions">
+          <ThemeToggle />
+          {isAdmin && (
+            <button
+              className="navbar-admin-btn"
+              onClick={() => { setAdminOpen(v => !v); closeMenu() }}
+            >⚙</button>
+          )}
+          <button
+            className="navbar-auth-btn"
+            onClick={() => { setAuthOpen(true); closeMenu() }}
+          >
+            {user
+              ? <span className="navbar-user-initial">{user.naam?.[0]?.toUpperCase()}</span>
+              : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            }
+          </button>
+        </div>
+        <button
+          className="btn-primary mobile-menu-cta"
+          onClick={() => { openBooking(); closeMenu() }}
+        >
+          Afspraak maken
+        </button>
+      </div>
 
       {authOpen && <AuthPanel onClose={() => setAuthOpen(false)} />}
       {adminOpen && <AdminWidget onClose={() => setAdminOpen(false)} />}
