@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import AdminWidget from '../components/AdminWidget'
@@ -18,6 +18,28 @@ export default function ComingSoonPage() {
   const [loading, setLoading] = useState(false)
 
   const { isAdmin, adminLogin } = useAuth()
+
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+
+  useEffect(() => {
+    const target = new Date('2026-05-10T00:00:00+02:00').getTime()
+    function tick() {
+      const diff = target - Date.now()
+      if (diff <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+        return
+      }
+      setCountdown({
+        days:    Math.floor(diff / 86400000),
+        hours:   Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000) / 60000),
+        seconds: Math.floor((diff % 60000) / 1000),
+      })
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -64,6 +86,20 @@ export default function ComingSoonPage() {
 
         <span className="cs-label">Binnenkort geopend</span>
         <h2 className="cs-title">We zijn er bijna</h2>
+
+        <div className="cs-countdown">
+          {[
+            { value: countdown.days,    label: 'Dagen' },
+            { value: countdown.hours,   label: 'Uren' },
+            { value: countdown.minutes, label: 'Minuten' },
+            { value: countdown.seconds, label: 'Seconden' },
+          ].map(({ value, label }) => (
+            <div key={label} className="cs-countdown-block">
+              <span className="cs-countdown-num">{String(value).padStart(2, '0')}</span>
+              <span className="cs-countdown-label">{label}</span>
+            </div>
+          ))}
+        </div>
         <p className="cs-text">
           Haven Salon Volendam opent binnenkort haar deuren.
           Laat je naam en e-mailadres achter en wij laten je weten als we open zijn.
@@ -76,7 +112,7 @@ export default function ComingSoonPage() {
           </div>
           <div className="cs-info-item">
             <span>📞</span>
-            <a href="tel:+31299123456">+31 (0)299 123 456</a>
+            <a href="tel:+31684700480">+31 (0)6 847 004 80</a>
           </div>
           <div className="cs-info-item">
             <span>📧</span>
@@ -109,7 +145,7 @@ export default function ComingSoonPage() {
         )}
 
         <div className="cs-social">
-          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">Instagram</a>
         </div>
       </div>
 

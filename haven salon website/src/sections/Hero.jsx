@@ -29,8 +29,8 @@ export default function Hero() {
         <div className="hero-visual">
           <div className="hero-img-wrap">
             <img
-              src="/halimm.jpg"
-              alt="Halim — Haven Salon"
+              src="/barber.png"
+              alt="Abdulla — Haven Salon"
               className="hero-photo"
             />
             <div className="hero-photo-gradient" />

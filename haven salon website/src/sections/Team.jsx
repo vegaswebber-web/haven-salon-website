@@ -7,7 +7,7 @@ const team = [
     role: 'Eigenaar & Kapper',
     specialty: 'Knippen, stylen & baard',
     initials: 'AH',
-    photo: '/halimm.jpg',
+    photo: '/barber.png',
   },
 ]
 

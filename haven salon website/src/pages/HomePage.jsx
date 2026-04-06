@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import Hero from '../sections/Hero'
+import Gallery from '../sections/Gallery'
+import FAQ from '../sections/FAQ'
 import { useBooking } from '../contexts/BookingContext'
 import './HomePage.css'
 
@@ -27,7 +29,7 @@ export default function HomePage() {
             <div className="divider" />
             <p className="section-subtitle">
               Bij Haven Salon staat persoonlijke aandacht en vakmanschap centraal.
-              Halim staat klaar met zijn jarenlange ervaring en liefde voor het vak —
+              Abdulla staat klaar met zijn jarenlange ervaring en liefde voor het vak —
               midden in het gezellige Volendam.
             </p>
             <Link to="/over-ons" className="btn-primary" style={{ marginTop: '28px' }}>
@@ -36,6 +38,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Gallery />
+      <FAQ />
 
       {/* CTA banner */}
       <section className="home-cta">

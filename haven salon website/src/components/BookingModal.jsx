@@ -53,7 +53,7 @@ export default function BookingModal() {
             </ol>
             <p className="bm-setup-contact">
               In de tussentijd kun je bellen of mailen:{' '}
-              <a href="tel:+31299123456">+31 (0)299 123 456</a>
+              <a href="tel:+31684700480">+31 (0)6 847 004 80</a>
               {' '}·{' '}
               <a href="mailto:info@havensalon.nl">info@havensalon.nl</a>
             </p>

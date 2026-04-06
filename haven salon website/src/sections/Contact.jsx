@@ -54,7 +54,11 @@ export default function Contact() {
                 <span className="detail-icon">📞</span>
                 <div>
                   <strong>Telefoon / WhatsApp</strong>
-                  <p><a href="tel:+31299123456">+31 (0)299 123 456</a></p>
+                  <p>
+                    <a href="tel:+31684700480">+31 (0)6 847 004 80</a>
+                    {' · '}
+                    <a href="https://wa.me/31684700480" target="_blank" rel="noreferrer">WhatsApp</a>
+                  </p>
                 </div>
               </div>
               <div className="contact-detail">
@@ -76,7 +80,7 @@ export default function Contact() {
             </div>
 
             <div className="contact-social">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
+              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
             </div>
           </div>
 

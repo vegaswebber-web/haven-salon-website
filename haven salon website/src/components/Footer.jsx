@@ -54,11 +54,11 @@ export default function Footer() {
             <h4>Contact</h4>
             <ul>
               <li>Kerkstraat 12, Volendam</li>
-              <li><a href="tel:+31299123456">+31 (0)299 123 456</a></li>
+              <li><a href="tel:+31684700480">+31 (0)6 847 004 80</a></li>
               <li><a href="mailto:info@havensalon.nl">info@havensalon.nl</a></li>
             </ul>
             <div className="footer-social">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">IG</a>
+              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">IG</a>
             </div>
           </div>
         </div>
