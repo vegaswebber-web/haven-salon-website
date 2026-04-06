@@ -6,8 +6,8 @@ const team = [
     name: 'Abdulhalim Al Hussein',
     role: 'Eigenaar & Kapper',
     specialty: 'Knippen, stylen & baard',
-    initials: 'HA',
-    photo: '/barber.png',
+    initials: 'AH',
+    photo: '/halimm.jpg',
   },
 ]
 
@@ -18,11 +18,11 @@ export default function Team() {
       <div className="container">
         <div className="team-header">
           <span className="section-label">Het team</span>
-          <h2 className="section-title">Maak kennis met onze kapper</h2>
+          <h2 className="section-title">Maak kennis met Abdulla</h2>
           <div className="divider" />
           <p className="section-subtitle">
-            Haven Salon wordt geleid door Halim — een gepassioneerde kapper met jarenlange
-            ervaring in Volendam. Persoonlijke aandacht is zijn handelsmerk.
+            Abdulla is de man achter Haven Salon. Met zijn persoonlijke aanpak
+            en oog voor detail zorgt hij ervoor dat jij met een goed gevoel de deur uitloopt.
           </p>
         </div>
 

@@ -34,10 +34,6 @@ export default function Hero() {
               className="hero-photo"
             />
             <div className="hero-photo-gradient" />
-            <div className="hero-badge">
-              <span className="badge-num">7+</span>
-              <span className="badge-label">Jaar<br />ervaring</span>
-            </div>
           </div>
         </div>
       </div>

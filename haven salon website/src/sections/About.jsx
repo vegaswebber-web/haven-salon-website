@@ -1,10 +1,10 @@
 import './About.css'
 
 const highlights = [
-  { icon: '✂️', title: 'Knippen & Stylen', desc: 'Van klassiek tot modern — we knippen precies wat bij jou past.' },
-  { icon: '🎨', title: 'Kleuren', desc: 'Highlights, balayage, volledig verven. Wij werken met topkwaliteit producten.' },
-  { icon: '💆', title: 'Behandelingen', desc: 'Voedende haarmaskers en hoofdhuidbehandelingen voor gezond, stralend haar.' },
-  { icon: '👰', title: 'Bruidswerk', desc: 'Jouw mooiste dag verdient de mooiste look. Bruidsstyling op maat.' },
+  { icon: '✂️', title: 'Knippen & Stylen', desc: 'Of je nu een strakke fade of een klassieke coupe wilt — ik luister naar wat jij mooi vindt en knip precies dat.' },
+  { icon: '🎨', title: 'Kleuren', desc: 'Van subtiele highlights tot een volledig nieuwe kleur. Ik werk met kwaliteitsproducten die je haar gezond houden.' },
+  { icon: '💆', title: 'Behandelingen', desc: 'Soms heeft je haar gewoon wat extra liefde nodig. Met voedende maskers en hoofdhuidverzorging geef ik je haar nieuwe glans.' },
+  { icon: '🧔', title: 'Baardverzorging', desc: 'Een goed verzorgde baard maakt het geheel. Ik shape, trim en finish je baard zodat hij er elke dag strak uitziet.' },
 ]
 
 export default function About() {
@@ -16,7 +16,7 @@ export default function About() {
             <div className="about-img-main">
               <img
                 src="/halimmm.jpg"
-                alt="Haven Salon — Halim"
+                alt="Haven Salon — Abdulla"
                 className="about-photo"
                 onError={e => {
                   e.target.style.display = 'none'
@@ -32,10 +32,6 @@ export default function About() {
                 <img src="/logo.png" alt="Haven Salon logo" className="about-logo-small" />
               </div>
             </div>
-            <div className="about-years">
-              <span className="years-num">7+</span>
-              <span className="years-label">jaar<br />ervaring</span>
-            </div>
           </div>
 
           <div className="about-content">
@@ -43,9 +39,9 @@ export default function About() {
             <h2 className="section-title">Welkom bij Haven Salon</h2>
             <div className="divider" />
             <p className="section-subtitle">
-              Haven Salon is meer dan een kapper — het is een plek waar je jezelf kunt zijn.
-              In het gezellige Volendam verwelkom ik elke klant met aandacht, vakmanschap
-              en een kopje koffie. Ik sta klaar om jou op je best te laten voelen.
+              Bij Haven Salon staat persoonlijke aandacht en vakmanschap centraal.
+              Abdulla staat klaar met zijn jarenlange ervaring en liefde voor het vak —
+              midden in het gezellige Volendam.
             </p>
             <div className="about-highlights">
               {highlights.map(h => (
