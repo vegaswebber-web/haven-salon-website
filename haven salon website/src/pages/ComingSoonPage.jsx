@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react'
-import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
+import { useBooking } from '../contexts/BookingContext'
 import AdminWidget from '../components/AdminWidget'
+import BookingModal from '../components/BookingModal'
 import './ComingSoonPage.css'
 
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
 export default function ComingSoonPage() {
-  const [form, setForm] = useState({ naam: '', email: '' })
-  const [sent, setSent] = useState(false)
   const [adminOpen, setAdminOpen] = useState(false)
   const [adminPw, setAdminPw] = useState('')
   const [pwVisible, setPwVisible] = useState(false)
@@ -18,6 +13,7 @@ export default function ComingSoonPage() {
   const [loading, setLoading] = useState(false)
 
   const { isAdmin, adminLogin } = useAuth()
+  const { open: bookingOpen, openBooking } = useBooking()
 
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
@@ -40,19 +36,6 @@ export default function ComingSoonPage() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [])
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      naam: form.naam,
-      email: form.email,
-      telefoon: '-',
-      bericht: 'Wil op de hoogte gehouden worden bij opening.',
-      name: form.naam,
-      message: 'Wil op de hoogte gehouden worden bij opening.',
-    }, { publicKey: PUBLIC_KEY }).catch(() => {})
-    setSent(true)
-  }
 
   async function handleAdminLogin(e) {
     e.preventDefault()
@@ -100,10 +83,15 @@ export default function ComingSoonPage() {
             </div>
           ))}
         </div>
+
         <p className="cs-text">
           Haven Salon Volendam opent binnenkort haar deuren.
-          Laat je naam en e-mailadres achter en wij laten je weten als we open zijn.
+          Wil je alvast een afspraak inplannen? Dat kan nu al!
         </p>
+
+        <button className="btn-primary cs-booking-btn" onClick={openBooking}>
+          Afspraak maken
+        </button>
 
         <div className="cs-info">
           <div className="cs-info-item">
@@ -119,30 +107,6 @@ export default function ComingSoonPage() {
             <a href="mailto:info@havensalon.nl">info@havensalon.nl</a>
           </div>
         </div>
-
-        {sent ? (
-          <div className="cs-sent">
-            ✓ Bedankt! We bellen je zodra we open zijn.
-          </div>
-        ) : (
-          <form className="cs-form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Jouw naam"
-              value={form.naam}
-              onChange={e => setForm(f => ({ ...f, naam: e.target.value }))}
-              required
-            />
-            <input
-              type="email"
-              placeholder="Jouw e-mailadres"
-              value={form.email}
-              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-              required
-            />
-            <button type="submit" className="btn-primary">Houd me op de hoogte</button>
-          </form>
-        )}
 
         <div className="cs-social">
           <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">Instagram</a>
@@ -180,6 +144,7 @@ export default function ComingSoonPage() {
       </div>
 
       {adminOpen && <AdminWidget onClose={() => setAdminOpen(false)} />}
+      {bookingOpen && <BookingModal />}
     </div>
   )
 }

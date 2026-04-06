@@ -94,6 +94,11 @@
   margin-bottom: 36px;
 }
 
+.cs-booking-btn {
+  width: 100%;
+  margin-bottom: 36px;
+}
+
 .cs-info {
   display: flex;
   flex-direction: column;
