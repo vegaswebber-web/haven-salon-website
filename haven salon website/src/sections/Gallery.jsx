@@ -1,12 +1,12 @@
 import './Gallery.css'
 
 const photos = [
-  { src: '/gallery/g1.jpg', alt: 'Knipwerk Haven Salon' },
-  { src: '/gallery/g2.jpg', alt: 'Knipwerk Haven Salon' },
-  { src: '/gallery/g3.jpg', alt: 'Knipwerk Haven Salon' },
-  { src: '/gallery/g4.jpg', alt: 'Knipwerk Haven Salon' },
-  { src: '/gallery/g5.jpg', alt: 'Knipwerk Haven Salon' },
-  { src: '/gallery/g6.jpg', alt: 'Knipwerk Haven Salon' },
+  { src: '/g1.png', alt: 'Knipwerk Haven Salon' },
+  { src: '/g2.png', alt: 'Knipwerk Haven Salon' },
+  { src: '/g3.png', alt: 'Knipwerk Haven Salon' },
+  { src: '/g4.png', alt: 'Knipwerk Haven Salon' },
+  { src: '/g5.png', alt: 'Knipwerk Haven Salon' },
+  { src: '/g6.png', alt: 'Knipwerk Haven Salon' },
 ]
 
 export default function Gallery() {
