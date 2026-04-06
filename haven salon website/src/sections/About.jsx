@@ -15,7 +15,7 @@ export default function About() {
           <div className="about-visual">
             <div className="about-img-main">
               <img
-                src="/barber.png"
+                src="/halimmm.jpg"
                 alt="Haven Salon — Halim"
                 className="about-photo"
                 onError={e => {
