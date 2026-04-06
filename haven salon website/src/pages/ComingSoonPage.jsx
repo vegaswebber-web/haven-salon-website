@@ -110,8 +110,6 @@ export default function ComingSoonPage() {
 
         <div className="cs-social">
           <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-          <span>·</span>
-          <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
         </div>
       </div>
 

@@ -59,7 +59,6 @@ export default function Footer() {
             </ul>
             <div className="footer-social">
               <a href="https://instagram.com" target="_blank" rel="noreferrer">IG</a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer">FB</a>
             </div>
           </div>
         </div>

@@ -77,7 +77,6 @@ export default function Contact() {
 
             <div className="contact-social">
               <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-btn">Facebook</a>
             </div>
           </div>
 
