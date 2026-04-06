@@ -1,0 +1,166 @@
+/* ── Overlay ─────────────────────────────────────────────────────── */
+.bm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* ── Modal ───────────────────────────────────────────────────────── */
+.bm-modal {
+  width: 100%;
+  max-width: 680px;
+  height: 88vh;
+  max-height: 780px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  animation: bm-in 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+}
+
+@keyframes bm-in {
+  from { transform: scale(0.95) translateY(10px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+.bm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-1);
+  flex-shrink: 0;
+}
+
+.bm-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bm-logo {
+  font-family: 'Volkhov', serif;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.bm-header-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.bm-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.bm-close:hover { color: var(--heading); }
+
+/* ── Salonhub iframe ─────────────────────────────────────────────── */
+.bm-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* ── Setup placeholder ───────────────────────────────────────────── */
+.bm-setup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 40px;
+  text-align: center;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.bm-setup-icon {
+  font-size: 40px;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.bm-setup h3 {
+  font-family: 'Volkhov', serif;
+  font-size: 1.4rem;
+  color: var(--heading);
+  margin: 0;
+}
+
+.bm-setup p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0;
+}
+
+.bm-setup-code {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-left: 3px solid var(--gold);
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+}
+
+.bm-setup-code code,
+.bm-setup-steps code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.bm-setup-steps {
+  text-align: left;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 2;
+  max-width: 440px;
+  width: 100%;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.bm-setup-steps strong { color: var(--heading); }
+
+.bm-setup-contact {
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.bm-setup-contact a {
+  color: var(--gold);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .bm-modal { height: 95vh; }
+  .bm-setup { padding: 32px 24px; }
+}

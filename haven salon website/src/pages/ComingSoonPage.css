@@ -1,0 +1,212 @@
+.cs-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-3);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 24px;
+}
+
+.cs-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(201, 169, 110, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(201, 169, 110, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.cs-content {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+}
+
+.cs-logo {
+  height: 120px;
+  width: auto;
+  margin: 0 auto 32px;
+}
+
+.cs-logo-fallback {
+  font-family: 'Volkhov', serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 32px;
+}
+
+.cs-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+}
+
+.cs-title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: var(--heading);
+  margin-bottom: 20px;
+}
+
+.cs-text {
+  font-size: 0.93rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.cs-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.cs-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.cs-info-item a {
+  color: var(--gold);
+  transition: color 0.2s;
+}
+
+.cs-info-item a:hover { color: var(--gold-light); }
+
+.cs-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.cs-form input {
+  width: 100%;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--heading);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: center;
+}
+
+[data-theme="light"] .cs-form input {
+  background: rgba(0,0,0,0.03);
+}
+
+.cs-form input:focus { border-color: var(--gold); }
+.cs-form input::placeholder { color: var(--text-muted); }
+
+.cs-form .btn-primary { width: 100%; text-align: center; }
+
+.cs-sent {
+  padding: 16px 24px;
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-size: 0.9rem;
+  margin-bottom: 32px;
+}
+
+.cs-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.cs-social a {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.cs-social a:hover { color: var(--gold); }
+
+/* Admin corner */
+.cs-admin-corner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.cs-admin-gear {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s;
+  color: var(--gold);
+}
+.cs-admin-gear:hover { opacity: 1; background: rgba(201,169,110,0.15); }
+
+.cs-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  min-width: 200px;
+}
+
+.cs-admin-form input {
+  padding: 8px 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--heading);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+}
+.cs-admin-form input:focus { border-color: var(--gold); }
+
+.cs-admin-form button {
+  padding: 8px;
+  background: var(--gold);
+  color: #0f0f0f;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.cs-admin-form button:hover { opacity: 0.85; }
+.cs-admin-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cs-admin-err {
+  font-size: 11px;
+  color: #e07070;
+}

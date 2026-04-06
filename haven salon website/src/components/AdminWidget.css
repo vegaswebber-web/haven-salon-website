@@ -1,0 +1,201 @@
+.aw-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 3000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 70px 24px 0;
+}
+
+.aw-box {
+  width: 320px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 24px;
+  animation: fadeDown 0.2s ease;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeDown {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.aw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.aw-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.aw-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.2s;
+}
+.aw-close:hover { color: var(--heading); }
+
+.aw-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.aw-label {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.aw-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.aw-badge.open { background: rgba(76, 175, 80, 0.15); color: #5dc878; }
+.aw-badge.coming_soon { background: rgba(255, 193, 7, 0.12); color: #f0c040; }
+.aw-badge.loading { color: var(--text-muted); background: none; }
+
+.aw-msg {
+  font-size: 12px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  border-radius: 2px;
+}
+.aw-msg.success { background: rgba(60,180,80,.12); color: #5dc878; border-left: 2px solid #5dc878; }
+.aw-msg.error   { background: rgba(200,60,60,.12); color: #e07070; border-left: 2px solid #e07070; }
+
+.aw-toggle {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 20px;
+  background: transparent;
+}
+.aw-toggle.success {
+  border-color: #2a7a3a;
+  color: #5dc878;
+}
+.aw-toggle.success:hover { background: #2a7a3a; color: #fff; }
+.aw-toggle.danger {
+  border-color: #a03030;
+  color: #e07070;
+}
+.aw-toggle.danger:hover { background: #a03030; color: #fff; }
+.aw-toggle:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.aw-section {
+  margin-bottom: 20px;
+}
+
+.aw-section-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.aw-theme-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.aw-theme-btn {
+  padding: 10px 8px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  border-radius: 2px;
+}
+.aw-theme-btn.success {
+  border-color: #2a7a3a;
+  color: #5dc878;
+}
+.aw-theme-btn.success:hover:not(:disabled),
+.aw-theme-btn.success.active {
+  background: #2a7a3a;
+  color: #fff;
+}
+.aw-theme-btn.warning {
+  border-color: #8a6a10;
+  color: #f0c040;
+}
+.aw-theme-btn.warning:hover:not(:disabled),
+.aw-theme-btn.warning.active {
+  background: #8a6a10;
+  color: #fff;
+}
+.aw-theme-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.aw-theme-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.aw-msg.warning {
+  background: rgba(240, 192, 64, 0.12);
+  color: #f0c040;
+  border-left: 2px solid #f0c040;
+}
+
+.aw-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.aw-preview {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--gold);
+  font-size: 11px;
+  text-decoration: underline;
+}
+.aw-preview:hover { color: var(--gold-light); }
+
+.aw-logout {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+.aw-logout:hover { color: #e07070; }
