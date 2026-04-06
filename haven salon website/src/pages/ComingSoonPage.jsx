@@ -1,10 +1,15 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import AdminWidget from '../components/AdminWidget'
 import './ComingSoonPage.css'
 
+const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
 export default function ComingSoonPage() {
-  const [form, setForm] = useState({ naam: '', telefoon: '' })
+  const [form, setForm] = useState({ naam: '', email: '' })
   const [sent, setSent] = useState(false)
   const [adminOpen, setAdminOpen] = useState(false)
   const [adminPw, setAdminPw] = useState('')
@@ -13,17 +18,15 @@ export default function ComingSoonPage() {
   const [loading, setLoading] = useState(false)
 
   const { isAdmin, adminLogin } = useAuth()
-  const API_URL = import.meta.env.VITE_API_URL || ''
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (API_URL) {
-      await fetch(`${API_URL}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, bericht: 'Notificatie bij opening', email: '-' }),
-      }).catch(() => {})
-    }
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      naam: form.naam,
+      email: form.email,
+      telefoon: '-',
+      bericht: 'Wil op de hoogte gehouden worden bij opening.',
+    }, PUBLIC_KEY).catch(() => {})
     setSent(true)
   }
 
@@ -61,7 +64,7 @@ export default function ComingSoonPage() {
         <h2 className="cs-title">We zijn er bijna</h2>
         <p className="cs-text">
           Haven Salon Volendam opent binnenkort haar deuren.
-          Laat je naam en telefoonnummer achter en wij bellen je als we open zijn.
+          Laat je naam en e-mailadres achter en wij laten je weten als we open zijn.
         </p>
 
         <div className="cs-info">
@@ -93,10 +96,10 @@ export default function ComingSoonPage() {
               required
             />
             <input
-              type="tel"
-              placeholder="Telefoonnummer"
-              value={form.telefoon}
-              onChange={e => setForm(f => ({ ...f, telefoon: e.target.value }))}
+              type="email"
+              placeholder="Jouw e-mailadres"
+              value={form.email}
+              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
               required
             />
             <button type="submit" className="btn-primary">Houd me op de hoogte</button>

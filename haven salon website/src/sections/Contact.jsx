@@ -18,7 +18,11 @@ export default function Contact() {
     e.preventDefault()
     setStatus('loading')
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, form, PUBLIC_KEY)
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+        ...form,
+        name: form.naam,
+        message: form.bericht,
+      }, PUBLIC_KEY)
       setStatus('success')
     } catch {
       setStatus('error')
