@@ -197,6 +197,9 @@ export default function AuthPanel({ onClose }) {
                   Nog geen account?{' '}
                   <span onClick={() => switchTab('register')}>Registreren</span>
                 </p>
+                <p className="ap-forgot" onClick={() => setMsg({ type: 'success', text: 'Geen wachtwoord nodig! Vul uw e-mailadres in en u ontvangt een inlogcode per e-mail.' })}>
+                  Wachtwoord vergeten?
+                </p>
               </form>
             )}
 
