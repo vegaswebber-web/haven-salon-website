@@ -107,7 +107,7 @@ export function AuthProvider({ children }) {
       emailjs.send(_SID, _WID, {
         'to-email': email,
         naam,
-      }, _PK).catch(() => {})
+      }, { publicKey: _PK }).catch(() => {})
     }
     // Don't auto-login — WelcomeGate shows welcome screen first
     return { success: true, naam }
@@ -128,7 +128,7 @@ export function AuthProvider({ children }) {
         'to-email': email,
         naam:       naam || 'Klant',
         otp_code:   code,
-      }, _PK)
+      }, { publicKey: _PK })
       return { success: true }
     } catch {
       _del(_K.ot)
