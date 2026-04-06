@@ -15,13 +15,18 @@ export function AuthProvider({ children }) {
     return null
   })
 
-  // Fetch site status from API on mount (only when API_URL is set)
+  // Fetch site status from API on mount + poll every 15 seconds
   useEffect(() => {
     if (!API_URL) return
-    fetch(`${API_URL}/api/status`)
-      .then(r => r.json())
-      .then(d => setSiteStatus(d.status || 'open'))
-      .catch(() => setSiteStatus('open'))
+    function checkStatus() {
+      fetch(`${API_URL}/api/status`)
+        .then(r => r.json())
+        .then(d => setSiteStatus(d.status || 'open'))
+        .catch(() => setSiteStatus('open'))
+    }
+    checkStatus()
+    const interval = setInterval(checkStatus, 15000)
+    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
