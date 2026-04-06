@@ -4,29 +4,29 @@ const categories = [
   {
     name: 'Heren',
     items: [
-      { label: 'Knippen + stylen (wax)', price: '€ 27,00' },
-      { label: 'Knippen + baard stylen of scheren', price: '€ 35,49' },
-      { label: 'Knippen + wassen', price: '€ 29,00' },
-      { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,49' },
+      { label: 'Knippen + stylen (wax)', price: '€ 27' },
+      { label: 'Knippen + baard stylen of scheren', price: '€ 35,5' },
+      { label: 'Knippen + wassen', price: '€ 29' },
+      { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,5' },
     ],
   },
   {
     name: 'Baardverzorging',
     items: [
-      { label: 'Baard stylen of scheren', price: '€ 15,00' },
+      { label: 'Baard stylen of scheren', price: '€ 15' },
     ],
   },
   {
     name: 'Jonge Heren',
     items: [
-      { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 19,50' },
+      { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 19,5' },
     ],
   },
   {
     name: 'Vrouwen',
     items: [
-      { label: 'Lang haar knippen + föhnen', price: '€ 45,00' },
-      { label: 'Kort / medium haar knippen', price: '€ 27,00' },
+      { label: 'Lang haar knippen + föhnen', price: '€ 45' },
+      { label: 'Kort / medium haar knippen', price: '€ 27' },
     ],
   },
 ]

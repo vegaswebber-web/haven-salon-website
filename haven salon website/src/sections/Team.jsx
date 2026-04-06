@@ -3,9 +3,9 @@ import './Team.css'
 
 const team = [
   {
-    name: 'Halim Abdullah Al Husein',
+    name: 'Abdulhalim Al Hussein',
     role: 'Eigenaar & Kapper',
-    specialty: 'Knippen, stylen, baard & bruidsstyling',
+    specialty: 'Knippen, stylen & baard',
     initials: 'HA',
     photo: '/barber.png',
   },
