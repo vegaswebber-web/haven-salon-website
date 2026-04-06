@@ -308,6 +308,15 @@
   text-overflow: ellipsis;
 }
 
+.aw-user-pw {
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .aw-user-delete {
   background: none;
   border: none;

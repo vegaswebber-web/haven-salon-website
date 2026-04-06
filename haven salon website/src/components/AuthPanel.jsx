@@ -13,93 +13,77 @@ export default function AuthPanel({ onClose }) {
   const [tab, setTab] = useState('login')
 
   // Login
-  const [loginEmail, setLoginEmail] = useState('')
-  const [loginStep, setLoginStep]   = useState('email')   // 'email' | 'otp'
-  const [loginOtp, setLoginOtp]     = useState('')
+  const [loginEmail, setLoginEmail]   = useState('')
+  const [loginPw, setLoginPw]         = useState('')
+  const [loginMode, setLoginMode]     = useState('password')  // 'password' | 'otp'
+  const [loginStep, setLoginStep]     = useState('email')     // 'email' | 'otp'
+  const [loginOtp, setLoginOtp]       = useState('')
 
   // Register
-  const [naam, setNaam]           = useState('')
-  const [regEmail, setRegEmail]   = useState('')
-  const [regStep, setRegStep]     = useState('form')   // 'form' | 'otp'
-  const [regOtp, setRegOtp]       = useState('')
+  const [naam, setNaam]               = useState('')
+  const [regEmail, setRegEmail]       = useState('')
+  const [regPw, setRegPw]             = useState('')
+  const [regPw2, setRegPw2]           = useState('')
 
   // Admin
-  const [adminPw, setAdminPw] = useState('')
+  const [adminPw, setAdminPw]         = useState('')
 
-  const [msg, setMsg]         = useState(null)    // { type: 'error'|'success', text }
+  const [msg, setMsg]       = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const { user, isAdmin, requestLoginOtp, requestRegisterOtp, verifyOtp, adminLogin, logout, adminLogout } = useAuth()
+  const {
+    user, isAdmin,
+    login, register,
+    requestLoginOtp, verifyOtp,
+    adminLogin, logout, adminLogout,
+  } = useAuth()
   const { openBooking } = useBooking()
 
   function switchTab(t) {
-    setTab(t)
-    setMsg(null)
-    setLoginStep('email')
-    setRegStep('form')
-    setLoginOtp('')
-    setRegOtp('')
+    setTab(t); setMsg(null)
+    setLoginMode('password'); setLoginStep('email')
+    setLoginOtp(''); setLoginPw('')
   }
 
-  // ── LOGIN: stap 1 — e-mailadres invullen ──────────────────────────────────
-  async function handleLoginRequest(e) {
+  // ── LOGIN: wachtwoord ─────────────────────────────────────────────────────
+  function handleLoginPw(e) {
     e.preventDefault()
-    setLoading(true)
-    setMsg(null)
+    const res = login(loginEmail, loginPw)
+    if (res.error) setMsg({ type: 'error', text: res.error })
+    else setTimeout(onClose, 700)
+  }
+
+  // ── LOGIN: OTP stap 1 ─────────────────────────────────────────────────────
+  async function handleLoginOtpRequest(e) {
+    e.preventDefault()
+    setLoading(true); setMsg(null)
     const res = await requestLoginOtp(loginEmail)
     setLoading(false)
-    if (res.error) {
-      setMsg({ type: 'error', text: res.error })
-    } else {
-      setLoginStep('otp')
-      setMsg({ type: 'success', text: `Code verstuurd naar ${loginEmail}. Controleer uw inbox.` })
-    }
+    if (res.error) setMsg({ type: 'error', text: res.error })
+    else { setLoginStep('otp'); setMsg({ type: 'success', text: `Code verstuurd naar ${loginEmail}.` }) }
   }
 
-  // ── LOGIN: stap 2 — code invoeren ─────────────────────────────────────────
-  function handleLoginVerify(e) {
+  // ── LOGIN: OTP stap 2 ─────────────────────────────────────────────────────
+  function handleLoginOtpVerify(e) {
     e.preventDefault()
     const res = verifyOtp(loginEmail, loginOtp)
-    if (res.error) {
-      setMsg({ type: 'error', text: res.error })
-    } else {
-      setMsg({ type: 'success', text: 'Ingelogd! Welkom terug.' })
-      setTimeout(onClose, 900)
-    }
+    if (res.error) setMsg({ type: 'error', text: res.error })
+    else { setMsg({ type: 'success', text: 'Ingelogd!' }); setTimeout(onClose, 700) }
   }
 
-  // ── REGISTER: stap 1 — naam + e-mail ─────────────────────────────────────
-  async function handleRegisterRequest(e) {
+  // ── REGISTER ──────────────────────────────────────────────────────────────
+  async function handleRegister(e) {
     e.preventDefault()
-    setLoading(true)
-    setMsg(null)
-    const res = await requestRegisterOtp(naam, regEmail)
-    setLoading(false)
-    if (res.error) {
-      setMsg({ type: 'error', text: res.error })
-    } else {
-      setRegStep('otp')
-      setMsg({ type: 'success', text: `Code verstuurd naar ${regEmail}. Controleer uw inbox.` })
-    }
-  }
-
-  // ── REGISTER: stap 2 — code invoeren ─────────────────────────────────────
-  function handleRegisterVerify(e) {
-    e.preventDefault()
-    const res = verifyOtp(regEmail, regOtp)
-    if (res.error) {
-      setMsg({ type: 'error', text: res.error })
-    } else {
-      setMsg({ type: 'success', text: 'Account aangemaakt! Welkom bij Haven Salon.' })
-      setTimeout(onClose, 1200)
-    }
+    if (regPw !== regPw2) return setMsg({ type: 'error', text: 'Wachtwoorden komen niet overeen.' })
+    const res = await register(naam, regEmail, regPw)
+    if (res.error) setMsg({ type: 'error', text: res.error })
+    else { setMsg({ type: 'success', text: 'Account aangemaakt! Welkom bij Haven Salon.' }); setTimeout(onClose, 1200) }
   }
 
   // ── ADMIN ─────────────────────────────────────────────────────────────────
   async function handleAdminLogin(e) {
     e.preventDefault()
-    setLoading(true)
-    setMsg(null)
+    setLoading(true); setMsg(null)
     const res = await adminLogin(adminPw)
     setLoading(false)
     if (res.error) setMsg({ type: 'error', text: res.error })
@@ -120,18 +104,16 @@ export default function AuthPanel({ onClose }) {
           <span className="ap-brand-sub">Volendam</span>
         </div>
 
-        {/* ─── Ingelogd als gewone gebruiker ─────────────────────────────── */}
+        {/* ─── Ingelogd als gebruiker ──────────────────────────────────────── */}
         {user && tab !== 'admin' && (
           <div className="ap-logged">
             <div className="ap-avatar">{user.naam?.[0]?.toUpperCase()}</div>
             <p className="ap-welcome-name">{user.naam}</p>
             <p className="ap-welcome-email">{user.email}</p>
-
             <button className="ap-book-btn" onClick={bookAndClose}>
               <span className="ap-book-icon">✂</span>
               Afspraak maken
             </button>
-
             <div className="ap-actions-row">
               <button className="ap-link-btn" onClick={() => { logout(); onClose() }}>Uitloggen</button>
               {!isAdmin && (
@@ -141,7 +123,7 @@ export default function AuthPanel({ onClose }) {
           </div>
         )}
 
-        {/* ─── Admin ingelogd ─────────────────────────────────────────────── */}
+        {/* ─── Admin ingelogd ──────────────────────────────────────────────── */}
         {isAdmin && tab === 'admin' && (
           <div className="ap-logged">
             <div className="ap-avatar ap-avatar--admin">⚙</div>
@@ -159,7 +141,7 @@ export default function AuthPanel({ onClose }) {
           </div>
         )}
 
-        {/* ─── Niet ingelogd ──────────────────────────────────────────────── */}
+        {/* ─── Niet ingelogd ───────────────────────────────────────────────── */}
         {(!user || tab === 'admin') && !(isAdmin && tab === 'admin') && (
           <>
             <div className="ap-tabs">
@@ -176,9 +158,9 @@ export default function AuthPanel({ onClose }) {
 
             {msg && <div className={`ap-msg ap-msg--${msg.type}`}>{msg.text}</div>}
 
-            {/* ── Inloggen ── */}
-            {tab === 'login' && loginStep === 'email' && (
-              <form className="ap-form" onSubmit={handleLoginRequest}>
+            {/* ── Inloggen: wachtwoord ── */}
+            {tab === 'login' && loginMode === 'password' && (
+              <form className="ap-form" onSubmit={handleLoginPw}>
                 <div className="ap-field">
                   <label>E-mailadres</label>
                   <input
@@ -186,25 +168,56 @@ export default function AuthPanel({ onClose }) {
                     placeholder="jouw@email.nl"
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
+                    required autoFocus
+                  />
+                </div>
+                <div className="ap-field">
+                  <label>Wachtwoord</label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    value={loginPw}
+                    onChange={e => setLoginPw(e.target.value)}
                     required
-                    autoFocus
+                  />
+                </div>
+                <button type="submit" className="ap-submit">Inloggen</button>
+                <p className="ap-forgot" onClick={() => { setLoginMode('otp'); setLoginStep('email'); setMsg(null) }}>
+                  Wachtwoord vergeten? Inloggen met code →
+                </p>
+                <p className="ap-switch">
+                  Nog geen account?{' '}
+                  <span onClick={() => switchTab('register')}>Registreren</span>
+                </p>
+              </form>
+            )}
+
+            {/* ── Inloggen: OTP e-mail stap ── */}
+            {tab === 'login' && loginMode === 'otp' && loginStep === 'email' && (
+              <form className="ap-form" onSubmit={handleLoginOtpRequest}>
+                <p className="ap-otp-note">Vul uw e-mailadres in en ontvang een inlogcode.</p>
+                <div className="ap-field">
+                  <label>E-mailadres</label>
+                  <input
+                    type="email"
+                    placeholder="jouw@email.nl"
+                    value={loginEmail}
+                    onChange={e => setLoginEmail(e.target.value)}
+                    required autoFocus
                   />
                 </div>
                 <button type="submit" className="ap-submit" disabled={loading}>
                   {loading ? 'Versturen…' : 'Stuur inlogcode'}
                 </button>
-                <p className="ap-switch">
-                  Nog geen account?{' '}
-                  <span onClick={() => switchTab('register')}>Registreren</span>
-                </p>
-                <p className="ap-forgot" onClick={() => setMsg({ type: 'success', text: 'Geen wachtwoord nodig! Vul uw e-mailadres in en u ontvangt een inlogcode per e-mail.' })}>
-                  Wachtwoord vergeten?
+                <p className="ap-forgot" onClick={() => { setLoginMode('password'); setMsg(null) }}>
+                  ← Terug naar wachtwoord
                 </p>
               </form>
             )}
 
-            {tab === 'login' && loginStep === 'otp' && (
-              <form className="ap-form" onSubmit={handleLoginVerify}>
+            {/* ── Inloggen: OTP code stap ── */}
+            {tab === 'login' && loginMode === 'otp' && loginStep === 'otp' && (
+              <form className="ap-form" onSubmit={handleLoginOtpVerify}>
                 <div className="ap-field">
                   <label>Inlogcode (6 cijfers)</label>
                   <input
@@ -214,21 +227,19 @@ export default function AuthPanel({ onClose }) {
                     maxLength={6}
                     value={loginOtp}
                     onChange={e => setLoginOtp(e.target.value.replace(/\D/g, ''))}
-                    required
-                    autoFocus
+                    required autoFocus
                   />
                 </div>
                 <button type="submit" className="ap-submit">Bevestigen</button>
-                <p className="ap-switch">
-                  Geen code ontvangen?{' '}
-                  <span onClick={() => { setLoginStep('email'); setMsg(null) }}>Opnieuw versturen</span>
+                <p className="ap-forgot" onClick={() => { setLoginStep('email'); setMsg(null) }}>
+                  Geen code ontvangen? Opnieuw versturen
                 </p>
               </form>
             )}
 
             {/* ── Registreren ── */}
-            {tab === 'register' && regStep === 'form' && (
-              <form className="ap-form" onSubmit={handleRegisterRequest}>
+            {tab === 'register' && (
+              <form className="ap-form" onSubmit={handleRegister}>
                 <div className="ap-field">
                   <label>Volledige naam</label>
                   <input
@@ -249,35 +260,34 @@ export default function AuthPanel({ onClose }) {
                     required
                   />
                 </div>
-                <button type="submit" className="ap-submit" disabled={loading}>
-                  {loading ? 'Versturen…' : 'Stuur bevestigingscode'}
-                </button>
-                <p className="ap-switch">
-                  Al een account?{' '}
-                  <span onClick={() => switchTab('login')}>Inloggen</span>
-                </p>
-              </form>
-            )}
-
-            {tab === 'register' && regStep === 'otp' && (
-              <form className="ap-form" onSubmit={handleRegisterVerify}>
-                <div className="ap-field">
-                  <label>Bevestigingscode (6 cijfers)</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="123456"
-                    maxLength={6}
-                    value={regOtp}
-                    onChange={e => setRegOtp(e.target.value.replace(/\D/g, ''))}
-                    required
-                    autoFocus
-                  />
+                <div className="ap-field-row">
+                  <div className="ap-field">
+                    <label>Wachtwoord</label>
+                    <input
+                      type="password"
+                      placeholder="Min. 6 tekens"
+                      value={regPw}
+                      onChange={e => setRegPw(e.target.value)}
+                      minLength={6}
+                      required
+                    />
+                  </div>
+                  <div className="ap-field">
+                    <label>Bevestig wachtwoord</label>
+                    <input
+                      type="password"
+                      placeholder="Min. 6 tekens"
+                      value={regPw2}
+                      onChange={e => setRegPw2(e.target.value)}
+                      minLength={6}
+                      required
+                    />
+                  </div>
                 </div>
                 <button type="submit" className="ap-submit">Account aanmaken</button>
                 <p className="ap-switch">
-                  Geen code ontvangen?{' '}
-                  <span onClick={() => { setRegStep('form'); setMsg(null) }}>Opnieuw proberen</span>
+                  Al een account?{' '}
+                  <span onClick={() => switchTab('login')}>Inloggen</span>
                 </p>
               </form>
             )}

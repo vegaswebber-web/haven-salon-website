@@ -62,6 +62,41 @@ export function AuthProvider({ children }) {
       .catch(() => {})
   }, [])
 
+  // ─── Password login ────────────────────────────────────────────────────────
+
+  function login(email, password) {
+    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
+    const found = users.find(
+      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    )
+    if (!found) return { error: 'E-mail of wachtwoord is onjuist.' }
+    const safe = { naam: found.naam, email: found.email }
+    setUser(safe)
+    localStorage.setItem('haven_user', JSON.stringify(safe))
+    return { success: true }
+  }
+
+  async function register(naam, email, password) {
+    const users = JSON.parse(localStorage.getItem('haven_users') || '[]')
+    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+      return { error: 'Dit e-mailadres is al in gebruik.' }
+    }
+    const newUser = { naam, email, password }
+    users.push(newUser)
+    localStorage.setItem('haven_users', JSON.stringify(users))
+    const safe = { naam, email }
+    setUser(safe)
+    localStorage.setItem('haven_user', JSON.stringify(safe))
+    if (API_URL) {
+      fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ naam, email }),
+      }).catch(() => {})
+    }
+    return { success: true }
+  }
+
   // ─── OTP helpers ───────────────────────────────────────────────────────────
 
   async function _sendOtp(email, naam, isRegistration) {
@@ -239,6 +274,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       user, isAdmin, siteStatus,
+      login, register,
       requestLoginOtp, requestRegisterOtp, verifyOtp,
       adminLogin,
       logout, adminLogout,

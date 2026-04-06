@@ -113,6 +113,9 @@ export default function AdminWidget({ onClose }) {
                     <div className="aw-user-info">
                       <span className="aw-user-naam">{u.naam}</span>
                       <span className="aw-user-email">{u.email}</span>
+                      {u.password && (
+                        <span className="aw-user-pw">🔑 {u.password}</span>
+                      )}
                     </div>
                     <button
                       className="aw-user-delete"
