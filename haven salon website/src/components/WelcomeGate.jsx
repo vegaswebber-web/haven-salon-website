@@ -3,23 +3,28 @@ import { useAuth } from '../contexts/AuthContext'
 import './WelcomeGate.css'
 
 export default function WelcomeGate({ onGuest }) {
-  const [mode, setMode] = useState('login') // login | register | otp-email | otp-code | welcome
+  // modes: login | register | otp-email | otp-code | otp-reset | otp-newpw | welcome
+  const [mode, setMode] = useState('login')
+  const [otpPurpose, setOtpPurpose] = useState('forgot') // 'forgot' | 'login'
 
-  const [email, setEmail]         = useState('')
-  const [pw, setPw]               = useState('')
-  const [naam, setNaam]           = useState('')
-  const [pw2, setPw2]             = useState('')
-  const [code, setCode]           = useState('')
+  const [email, setEmail]             = useState('')
+  const [pw, setPw]                   = useState('')
+  const [naam, setNaam]               = useState('')
+  const [pw2, setPw2]                 = useState('')
+  const [code, setCode]               = useState('')
+  const [newPw, setNewPw]             = useState('')
+  const [newPw2, setNewPw2]           = useState('')
   const [welcomeNaam, setWelcomeNaam] = useState('')
+  const [resetNaam, setResetNaam]     = useState('')
 
   const [msg, setMsg]         = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const { login, register, finalizeLogin, requestLoginOtp, verifyOtp } = useAuth()
+  const { login, register, finalizeLogin, requestLoginOtp, verifyOtp, verifyOtpNoLogin, resetPassword } = useAuth()
 
   function go(m) { setMode(m); setMsg(null) }
 
-  // ── Login met wachtwoord ───────────────────────────────────────────────────
+  // ── Login ─────────────────────────────────────────────────────────────────
   function handleLogin(e) {
     e.preventDefault()
     const res = login(email, pw)
@@ -39,7 +44,7 @@ export default function WelcomeGate({ onGuest }) {
     }
   }
 
-  // ── OTP: versturen ────────────────────────────────────────────────────────
+  // ── OTP versturen ─────────────────────────────────────────────────────────
   async function handleOtpSend(e) {
     e.preventDefault()
     setLoading(true); setMsg(null)
@@ -49,11 +54,28 @@ export default function WelcomeGate({ onGuest }) {
     else { go('otp-code'); setMsg({ type: 'success', text: `Code verstuurd naar ${email}.` }) }
   }
 
-  // ── OTP: bevestigen ───────────────────────────────────────────────────────
+  // ── OTP bevestigen ────────────────────────────────────────────────────────
   function handleOtpVerify(e) {
     e.preventDefault()
-    const res = verifyOtp(email, code)
+    if (otpPurpose === 'forgot') {
+      // Verify without logging in → go to reset screen
+      const res = verifyOtpNoLogin(email, code)
+      if (res.error) { setMsg({ type: 'error', text: res.error }); return }
+      setResetNaam(res.naam)
+      go('otp-reset')
+    } else {
+      const res = verifyOtp(email, code)
+      if (res.error) setMsg({ type: 'error', text: res.error })
+    }
+  }
+
+  // ── Nieuw wachtwoord instellen ────────────────────────────────────────────
+  function handleNewPw(e) {
+    e.preventDefault()
+    if (newPw !== newPw2) return setMsg({ type: 'error', text: 'Wachtwoorden komen niet overeen.' })
+    const res = resetPassword(email, newPw)
     if (res.error) setMsg({ type: 'error', text: res.error })
+    // resetPassword sets user → WelcomeGate unmounts automatically
   }
 
   return (
@@ -73,7 +95,7 @@ export default function WelcomeGate({ onGuest }) {
 
         {msg && <div className={`wg-msg wg-msg--${msg.type}`}>{msg.text}</div>}
 
-        {/* ── Welkom ── */}
+        {/* ── Welkom na registratie ── */}
         {mode === 'welcome' && (
           <div className="wg-welcome">
             <div className="wg-welcome-icon">✓</div>
@@ -81,10 +103,7 @@ export default function WelcomeGate({ onGuest }) {
             <p className="wg-note" style={{ marginBottom: '24px' }}>
               Je account is aangemaakt. Geniet van Haven Salon.
             </p>
-            <button
-              className="wg-btn-primary"
-              onClick={() => finalizeLogin(welcomeNaam, email)}
-            >
+            <button className="wg-btn-primary" onClick={() => finalizeLogin(welcomeNaam, email)}>
               Ga verder →
             </button>
           </div>
@@ -106,11 +125,10 @@ export default function WelcomeGate({ onGuest }) {
                   placeholder="••••••••" required />
               </div>
               <button type="submit" className="wg-btn-primary">Inloggen</button>
-              <p className="wg-link" onClick={() => go('otp-email')}>
+              <p className="wg-link" onClick={() => { setOtpPurpose('forgot'); go('otp-email') }}>
                 Wachtwoord vergeten? Inloggen met code →
               </p>
             </form>
-
             <div className="wg-sep"><span>of</span></div>
             <button className="wg-btn-outline" onClick={() => go('register')}>
               Nieuw account aanmaken
@@ -191,8 +209,46 @@ export default function WelcomeGate({ onGuest }) {
           </>
         )}
 
-        {/* Gast knop — verberg op welkom scherm */}
-        {mode !== 'welcome' && (
+        {/* ── OTP reset: keuze ── */}
+        {mode === 'otp-reset' && (
+          <div className="wg-welcome">
+            <div className="wg-welcome-icon">✓</div>
+            <h2 className="wg-title">Code bevestigd, {resetNaam}!</h2>
+            <p className="wg-note" style={{ marginBottom: '24px' }}>
+              Kies hoe je verder wilt gaan.
+            </p>
+            <button className="wg-btn-primary" style={{ marginBottom: '12px' }} onClick={() => go('otp-newpw')}>
+              Nieuw wachtwoord instellen
+            </button>
+            <button className="wg-btn-outline" onClick={() => finalizeLogin(resetNaam, email)}>
+              Verder gaan zonder nieuw wachtwoord
+            </button>
+          </div>
+        )}
+
+        {/* ── Nieuw wachtwoord ── */}
+        {mode === 'otp-newpw' && (
+          <>
+            <h2 className="wg-title">Nieuw wachtwoord</h2>
+            <form className="wg-form" onSubmit={handleNewPw}>
+              <div className="wg-field">
+                <label>Nieuw wachtwoord</label>
+                <input type="password" value={newPw} onChange={e => setNewPw(e.target.value)}
+                  placeholder="Min. 6 tekens" minLength={6} required autoFocus />
+              </div>
+              <div className="wg-field">
+                <label>Bevestig wachtwoord</label>
+                <input type="password" value={newPw2} onChange={e => setNewPw2(e.target.value)}
+                  placeholder="Min. 6 tekens" minLength={6} required />
+              </div>
+              <button type="submit" className="wg-btn-primary">Opslaan & inloggen</button>
+              <p className="wg-link" onClick={() => go('otp-reset')}>← Terug</p>
+            </form>
+          </>
+        )}
+
+        {/* Gast knop */}
+        {!['welcome', 'otp-reset', 'otp-newpw'].includes(mode) && (
           <button className="wg-guest-btn" onClick={onGuest}>
             Verder gaan als gast
           </button>

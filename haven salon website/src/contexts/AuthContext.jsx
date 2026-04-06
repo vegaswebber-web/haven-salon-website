@@ -151,13 +151,20 @@ export function AuthProvider({ children }) {
     return _sendOtp(email, naam, true)
   }
 
-  function verifyOtp(email, code) {
+  function _checkOtp(email, code) {
     const od = _get(_K.ot)
     if (!od) return { error: 'Geen code gevonden. Vraag een nieuwe aan.' }
     if (od.e.toLowerCase() !== email.toLowerCase()) return { error: 'Ongeldig verzoek.' }
     if (Date.now() > od.x) { _del(_K.ot); return { error: 'Code verlopen. Vraag een nieuwe aan.' } }
     if (od.c !== String(code).trim()) return { error: 'Onjuiste code. Controleer uw e-mail.' }
     _del(_K.ot)
+    return { success: true, meta: od }
+  }
+
+  function verifyOtp(email, code) {
+    const check = _checkOtp(email, code)
+    if (check.error) return check
+    const od = check.meta
     const ul = _get(_K.ul) || []
     let found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
     if (!found && od.r) {
@@ -174,6 +181,28 @@ export function AuthProvider({ children }) {
     }
     if (!found) return { error: 'Account niet gevonden.' }
     const safe = { naam: found.n, email: found.e }
+    setUser(safe)
+    _set(_K.us, safe)
+    return { success: true }
+  }
+
+  // Verify OTP without logging in (for password reset flow)
+  function verifyOtpNoLogin(email, code) {
+    const check = _checkOtp(email, code)
+    if (check.error) return check
+    const ul = _get(_K.ul) || []
+    const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
+    if (!found) return { error: 'Account niet gevonden.' }
+    return { success: true, naam: found.n }
+  }
+
+  function resetPassword(email, newPassword) {
+    const ul = _get(_K.ul) || []
+    const idx = ul.findIndex(u => u.e.toLowerCase() === email.toLowerCase())
+    if (idx === -1) return { error: 'Account niet gevonden.' }
+    ul[idx].p = newPassword
+    _set(_K.ul, ul)
+    const safe = { naam: ul[idx].n, email: ul[idx].e }
     setUser(safe)
     _set(_K.us, safe)
     return { success: true }
@@ -248,7 +277,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider value={{
       user, isAdmin, siteStatus,
       login, register, finalizeLogin,
-      requestLoginOtp, requestRegisterOtp, verifyOtp,
+      requestLoginOtp, requestRegisterOtp, verifyOtp, verifyOtpNoLogin, resetPassword,
       adminLogin,
       logout, adminLogout,
       fetchSiteStatus, toggleSiteStatus, setRemoteStatus,
