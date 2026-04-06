@@ -328,3 +328,48 @@
   transition: color 0.2s;
 }
 .aw-user-delete:hover { color: #e07070; }
+
+/* ── Contacts ── */
+.aw-contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+}
+
+.aw-contact-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aw-contact-datum {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.aw-contact-bericht {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.5;
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.aw-contact-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.aw-contact-reply {
+  font-size: 11px;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.aw-contact-reply:hover { opacity: 0.7; }

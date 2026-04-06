@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
 
 export default function Contact() {
-  const { user } = useAuth()
+  const { user, saveContact } = useAuth()
   const [form, setForm] = useState({
     naam:     user?.naam  || '',
     email:    user?.email || '',
@@ -18,11 +18,7 @@ export default function Contact() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    // Redirect to WhatsApp with the message
-    const tekst = encodeURIComponent(
-      `Naam: ${form.naam}\nE-mail: ${form.email}\nTelefoon: ${form.telefoon || '-'}\n\n${form.bericht}`
-    )
-    window.open(`https://wa.me/31684700480?text=${tekst}`, '_blank')
+    saveContact({ ...form, datum: new Date().toLocaleString('nl-NL') })
     setStatus('success')
   }
 
@@ -86,7 +82,7 @@ export default function Contact() {
               <div className="contact-success">
                 <div className="success-icon">✓</div>
                 <h3>Bedankt!</h3>
-                <p>Je bericht is doorgestuurd via WhatsApp. We nemen zo snel mogelijk contact met je op.</p>
+                <p>We nemen zo snel mogelijk contact met je op.</p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -109,7 +105,7 @@ export default function Contact() {
                   <textarea id="bericht" name="bericht" value={form.bericht} onChange={handleChange} required placeholder="Bijv: knippen + baard, zaterdag ochtend" rows={5} />
                 </div>
                 <button type="submit" className="btn-primary">
-                  Verstuur via WhatsApp
+                  Verstuur aanvraag
                 </button>
               </form>
             )}

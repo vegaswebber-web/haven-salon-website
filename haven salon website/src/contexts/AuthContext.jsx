@@ -11,6 +11,7 @@ const _K = {
   at: '_hx7t',   // admin token
   ss: '_hx4v',   // site status
   ot: '_hx2p',   // otp data
+  cl: '_hx3c',   // contact list
 }
 
 // ── Encode / decode (base64 + URI) ───────────────────────────────────────────
@@ -263,6 +264,15 @@ export function AuthProvider({ children }) {
 
   function adminLogout() { _setAt(''); setIsAdmin(false); _del(_K.at) }
 
+  // ── Contacts ─────────────────────────────────────────────────────────────────
+  function saveContact(data) {
+    const cl = _get(_K.cl) || []
+    cl.unshift({ ...data, id: Date.now() })
+    _set(_K.cl, cl)
+  }
+  function getContacts() { return _get(_K.cl) || [] }
+  function deleteContact(id) { _set(_K.cl, (_get(_K.cl) || []).filter(c => c.id !== id)) }
+
   // ── Read users for admin panel ───────────────────────────────────────────────
   function getUsers() { return (_get(_K.ul) || []).map(u => ({ naam: u.n, email: u.e, password: u.p })) }
 
@@ -282,6 +292,7 @@ export function AuthProvider({ children }) {
       logout, adminLogout,
       fetchSiteStatus, toggleSiteStatus, setRemoteStatus,
       getUsers, deleteUser,
+      saveContact, getContacts, deleteContact,
     }}>
       {children}
     </AuthContext.Provider>

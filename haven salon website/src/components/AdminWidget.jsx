@@ -3,11 +3,16 @@ import { useAuth } from '../contexts/AuthContext'
 import './AdminWidget.css'
 
 export default function AdminWidget({ onClose }) {
-  const { siteStatus, setRemoteStatus, adminLogout, getUsers, deleteUser: ctxDelete } = useAuth()
+  const {
+    siteStatus, setRemoteStatus, adminLogout,
+    getUsers, deleteUser: ctxDelete,
+    getContacts, deleteContact: ctxDelContact,
+  } = useAuth()
   const [loading, setLoading] = useState(null)
   const [msg, setMsg] = useState(null)
   const [tab, setTab] = useState('status')
   const [users, setUsers] = useState(() => getUsers())
+  const [contacts, setContacts] = useState(() => getContacts())
 
   async function handleSetStatus(status) {
     setLoading(status)
@@ -22,6 +27,11 @@ export default function AdminWidget({ onClose }) {
     setUsers(prev => prev.filter(u => u.email !== email))
   }
 
+  function deleteContact(id) {
+    ctxDelContact(id)
+    setContacts(prev => prev.filter(c => c.id !== id))
+  }
+
   return (
     <div className="aw-overlay" onClick={onClose}>
       <div className="aw-box" onClick={e => e.stopPropagation()}>
@@ -34,6 +44,9 @@ export default function AdminWidget({ onClose }) {
         <div className="aw-tabs">
           <button className={`aw-tab ${tab === 'status' ? 'active' : ''}`} onClick={() => setTab('status')}>
             Website
+          </button>
+          <button className={`aw-tab ${tab === 'contacts' ? 'active' : ''}`} onClick={() => setTab('contacts')}>
+            Berichten {contacts.length > 0 && <span className="aw-tab-count">{contacts.length}</span>}
           </button>
           <button className={`aw-tab ${tab === 'users' ? 'active' : ''}`} onClick={() => setTab('users')}>
             Gebruikers {users.length > 0 && <span className="aw-tab-count">{users.length}</span>}
@@ -91,6 +104,37 @@ export default function AdminWidget({ onClose }) {
               </a>
             </div>
           </>
+        )}
+
+        {/* ── Contacts tab ── */}
+        {tab === 'contacts' && (
+          <div className="aw-users">
+            {contacts.length === 0 ? (
+              <p className="aw-users-empty">Nog geen berichten ontvangen.</p>
+            ) : (
+              <div className="aw-users-list">
+                {contacts.map(c => (
+                  <div key={c.id} className="aw-contact-row">
+                    <div className="aw-contact-top">
+                      <span className="aw-user-naam">{c.naam}</span>
+                      <span className="aw-contact-datum">{c.datum}</span>
+                    </div>
+                    <span className="aw-user-email">{c.email}{c.telefoon ? ` · ${c.telefoon}` : ''}</span>
+                    <p className="aw-contact-bericht">{c.bericht}</p>
+                    <div className="aw-contact-actions">
+                      <a
+                        className="aw-contact-reply"
+                        href={`mailto:${c.email}?subject=Haven Salon – Reactie op uw bericht`}
+                      >
+                        ✉ Beantwoorden
+                      </a>
+                      <button className="aw-user-delete" onClick={() => deleteContact(c.id)} title="Verwijderen">✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         )}
 
         {/* ── Users tab ── */}
