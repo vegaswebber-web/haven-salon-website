@@ -22,7 +22,7 @@ function ScrollReveal() {
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('section'))
     sections.slice(1).forEach(s => s.classList.add('reveal'))
-    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid')
+    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid, .service-card, .gallery-item, .faq-item, .team-card')
     cards.forEach(c => c.classList.add('reveal'))
 
     const obs = new IntersectionObserver(entries => {
@@ -38,6 +38,7 @@ function ScrollReveal() {
 }
 
 function SiteContent() {
+  const location = useLocation()
   const { siteStatus, isAdmin, user } = useAuth()
   const { open: bookingOpen } = useBooking()
   const [isGuest, setIsGuest] = useState(() => !!sessionStorage.getItem('_hxg'))
@@ -75,7 +76,7 @@ function SiteContent() {
       {!user && !isGuest && <WelcomeGate onGuest={handleGuest} />}
       <ScrollReveal />
       <Navbar />
-      <main>
+      <main key={location.pathname} className="page-fade">
         <Routes>
           <Route path="/"          element={<HomePage />} />
           <Route path="/over-ons"  element={<OverOnsPage />} />

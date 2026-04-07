@@ -71,7 +71,7 @@
 .faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.45s cubic-bezier(.4,0,.2,1);
 }
 
 .faq-item.open .faq-answer {

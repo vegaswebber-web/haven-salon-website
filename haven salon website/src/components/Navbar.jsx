@@ -24,8 +24,15 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false)
-    window.scrollTo(0, 0)
-  }, [location.pathname])
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location.pathname, location.hash])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''

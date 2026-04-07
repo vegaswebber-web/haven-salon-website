@@ -8,11 +8,6 @@ const services = [
     icon: '✂️',
   },
   {
-    title: 'Kleuren',
-    items: ['Highlights', 'Balayage', 'Volledig verven', 'Toning & Gloss'],
-    icon: '🎨',
-  },
-  {
     title: 'Styling',
     items: ['Föhnen & stylen', 'Steil maken', 'Kroezen & curls', 'Opsteken'],
     icon: '💅',

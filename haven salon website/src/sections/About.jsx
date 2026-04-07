@@ -2,7 +2,6 @@ import './About.css'
 
 const highlights = [
   { icon: '✂️', title: 'Knippen & Stylen', desc: 'Of je nu een strakke fade of een klassieke coupe wilt — ik luister naar wat jij mooi vindt en knip precies dat.' },
-  { icon: '🎨', title: 'Kleuren', desc: 'Van subtiele highlights tot een volledig nieuwe kleur. Ik werk met kwaliteitsproducten die je haar gezond houden.' },
   { icon: '💆', title: 'Behandelingen', desc: 'Soms heeft je haar gewoon wat extra liefde nodig. Met voedende maskers en hoofdhuidverzorging geef ik je haar nieuwe glans.' },
   { icon: '🧔', title: 'Baardverzorging', desc: 'Een goed verzorgde baard maakt het geheel. Ik shape, trim en finish je baard zodat hij er elke dag strak uitziet.' },
 ]
@@ -15,17 +14,11 @@ export default function About() {
           <div className="about-visual">
             <div className="about-img-main">
               <img
-                src="/halimmm.jpg"
-                alt="Haven Salon — Abdulla"
+                src="/logo.png"
+                alt="Haven Salon"
                 className="about-photo"
-                onError={e => {
-                  e.target.style.display = 'none'
-                  e.target.nextSibling.style.display = 'flex'
-                }}
+                style={{ objectFit: 'contain', padding: '40px', background: 'var(--bg-2)' }}
               />
-              <div className="about-img-placeholder" style={{ display: 'none' }}>
-                <span>Haven Salon</span>
-              </div>
             </div>
             <div className="about-img-accent">
               <div className="about-img-small-logo">

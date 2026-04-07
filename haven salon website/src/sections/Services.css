@@ -45,7 +45,16 @@
 
 .service-card:hover::after { transform: scaleX(1); }
 
-.service-icon { font-size: 1.8rem; margin-bottom: 16px; }
+.service-icon {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.2) rotate(-5deg);
+}
 
 .service-title {
   font-family: 'Volkhov', serif;

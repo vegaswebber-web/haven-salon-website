@@ -6,7 +6,7 @@ export default function DienstenPage() {
     <>
       <PageBanner
         title="Diensten"
-        subtitle="Van knippen en kleuren tot bruidsstyling — ontdek alles wat wij aanbieden."
+        subtitle="Van knippen en stylen tot bruidsstyling — ontdek alles wat wij aanbieden."
       />
       <Services />
     </>
