@@ -11,6 +11,8 @@ import OverOnsPage from './pages/OverOnsPage'
 import PrijzenPage from './pages/PrijzenPage'
 import TeamPage from './pages/TeamPage'
 import ContactPage from './pages/ContactPage'
+import GaleriePage from './pages/GaleriePage'
+import FAQPage from './pages/FAQPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -82,6 +84,8 @@ function SiteContent() {
           <Route path="/over-ons"  element={<OverOnsPage />} />
           <Route path="/prijzen"   element={<PrijzenPage />} />
           <Route path="/team"      element={<TeamPage />} />
+          <Route path="/galerie"   element={<GaleriePage />} />
+          <Route path="/faq"       element={<FAQPage />} />
           <Route path="/contact"   element={<ContactPage />} />
           <Route path="*"          element={<NotFoundPage />} />
         </Routes>
