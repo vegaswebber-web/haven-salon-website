@@ -14,9 +14,9 @@ export default function About() {
           <div className="about-visual">
             <div className="about-img-main">
               <img
-                src="/logo.png"
-                alt="Haven Salon"
-                className="about-photo about-photo--logo"
+                src="/halimmm.jpg"
+                alt="Haven Salon — Abdulla"
+                className="about-photo"
               />
             </div>
             <div className="about-img-accent">
