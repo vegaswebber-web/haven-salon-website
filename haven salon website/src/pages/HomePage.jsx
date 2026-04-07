@@ -14,7 +14,7 @@ export default function HomePage() {
         <div className="container home-about-inner">
           <div className="home-about-visual">
             <div className="home-about-img">
-              <img src="/halimmm.jpg" alt="Haven Salon" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
+              <img src="/halimm.jpg" alt="Haven Salon" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
             </div>
             <div className="home-about-badge">
               <span className="badge-num">7+</span>
