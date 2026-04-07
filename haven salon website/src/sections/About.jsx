@@ -16,8 +16,7 @@ export default function About() {
               <img
                 src="/logo.png"
                 alt="Haven Salon"
-                className="about-photo"
-                style={{ objectFit: 'contain', padding: '40px', background: 'var(--bg-2)' }}
+                className="about-photo about-photo--logo"
               />
             </div>
             <div className="about-img-accent">

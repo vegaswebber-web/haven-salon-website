@@ -22,6 +22,16 @@
   display: block;
 }
 
+.about-photo--logo {
+  object-fit: contain;
+  padding: 48px;
+  background: radial-gradient(ellipse at center, #1a140d 0%, #0f0f0f 100%);
+}
+
+[data-theme="light"] .about-photo--logo {
+  background: radial-gradient(ellipse at center, #2a1c10 0%, #1a1a1a 100%);
+}
+
 .about-img-placeholder {
   width: 100%;
   height: 100%;
