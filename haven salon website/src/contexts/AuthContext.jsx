@@ -126,14 +126,16 @@ export function AuthProvider({ children }) {
     _set(_K.ot, { e: email, c: code, x: Date.now() + 600000, n: naam, r: isReg })
     try {
       await emailjs.send(_SID, _TID, {
-        'to-email': email,
-        naam:       naam || 'Klant',
-        otp_code:   code,
+        to_email: email,
+        naam:     naam || 'Klant',
+        otp_code: code,
       }, { publicKey: _PK })
       return { success: true }
-    } catch {
+    } catch (err) {
+      console.error('[EmailJS OTP error]', err)
       _del(_K.ot)
-      return { error: 'Kon e-mail niet versturen. Probeer het opnieuw.' }
+      const detail = err?.text || err?.message || JSON.stringify(err)
+      return { error: `Kon e-mail niet versturen: ${detail}` }
     }
   }
 
