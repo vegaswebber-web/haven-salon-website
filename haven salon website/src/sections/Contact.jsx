@@ -92,7 +92,7 @@ export default function Contact() {
             </div>
 
             <div className="contact-social">
-              <a href="https://instagram.com/abdulla_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
+              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
             </div>
           </div>
 

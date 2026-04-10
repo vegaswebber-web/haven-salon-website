@@ -60,7 +60,7 @@ export default function Footer() {
               <li><a href="mailto:info@havensalon.nl">info@havensalon.nl</a></li>
             </ul>
             <div className="footer-social">
-              <a href="https://instagram.com/abdulla_kapper" target="_blank" rel="noreferrer">IG</a>
+              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">IG</a>
             </div>
           </div>
         </div>
