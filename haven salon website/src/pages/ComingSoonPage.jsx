@@ -96,7 +96,7 @@ export default function ComingSoonPage() {
         <div className="cs-info">
           <div className="cs-info-item">
             <span>📍</span>
-            <span>Kerkstraat 12, Volendam</span>
+            <span>Burgstraat 1, Volendam</span>
           </div>
           <div className="cs-info-item">
             <span>📞</span>

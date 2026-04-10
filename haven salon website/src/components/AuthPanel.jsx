@@ -93,11 +93,10 @@ export default function AuthPanel({ onClose }) {
   function bookAndClose() { onClose(); openBooking() }
 
   return (
-    <div className="ap-overlay" onClick={onClose}>
-      <div className="ap-modal" onClick={e => e.stopPropagation()}>
+    <div className="ap-overlay">
+      <div className="ap-modal">
 
         <div className="ap-accent" />
-        <button className="ap-close" onClick={onClose} aria-label="Sluiten">✕</button>
 
         <div className="ap-brand">
           <span className="ap-brand-name">Haven Salon</span>

@@ -40,7 +40,7 @@ export default function Contact() {
                 <span className="detail-icon">📍</span>
                 <div>
                   <strong>Adres</strong>
-                  <p>Kerkstraat 12, 1131 Volendam</p>
+                  <p>Burgstraat 1, Volendam</p>
                 </div>
               </div>
               <div className="contact-detail">

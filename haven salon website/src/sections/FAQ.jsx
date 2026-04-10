@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: 'Is er parkeergelegenheid in de buurt?',
-    a: 'Ja, in de Kerkstraat en de directe omgeving zijn meerdere parkeerplaatsen beschikbaar. Volendam heeft ook gratis parkeren op loopafstand.',
+    a: 'Ja, in de Burgstraat en de directe omgeving zijn meerdere parkeerplaatsen beschikbaar. Volendam heeft ook gratis parkeren op loopafstand.',
   },
   {
     q: 'Werken jullie ook met kinderen?',
