@@ -78,15 +78,47 @@ export function AuthProvider({ children }) {
       .catch(() => {})
   }, [])
 
+  // ── Log helper ──────────────────────────────────────────────────────────────
+  function _log(type, data = {}) {
+    if (!_AU) return
+    fetch(`${_AU}/api/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, ...data }),
+    }).catch(() => {})
+  }
+
   // ── Password login ──────────────────────────────────────────────────────────
-  function login(email, password) {
+  async function login(email, password) {
+    // 1. Check localStorage first
     const ul = _get(_K.ul) || []
-    const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase() && u.p === password)
-    if (!found) return { error: 'E-mail of wachtwoord is onjuist.' }
-    const safe = { naam: found.n, email: found.e }
-    setUser(safe)
-    _set(_K.us, safe)
-    return { success: true }
+    const local = ul.find(u => u.e.toLowerCase() === email.toLowerCase() && u.p === password)
+    if (local) {
+      const safe = { naam: local.n, email: local.e }
+      setUser(safe); _set(_K.us, safe)
+      _log('login', { naam: local.n, email: local.e })
+      return { success: true }
+    }
+    // 2. Fallback: check backend (in case localStorage was cleared)
+    if (_AU) {
+      try {
+        const r = await fetch(`${_AU}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        })
+        if (r.ok) {
+          const data = await r.json()
+          const safe = { naam: data.naam, email: data.email }
+          // Restore to localStorage
+          ul.push({ n: data.naam, e: data.email, p: password })
+          _set(_K.ul, ul)
+          setUser(safe); _set(_K.us, safe)
+          return { success: true }
+        }
+      } catch { /* silent */ }
+    }
+    return { error: 'E-mail of wachtwoord is onjuist.' }
   }
 
   async function register(naam, email, password) {
@@ -100,17 +132,12 @@ export function AuthProvider({ children }) {
       fetch(`${_AU}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ naam, email }),
+        body: JSON.stringify({ naam, email, password }),
       }).catch(() => {})
     }
-    // Send welcome email
     if (_WID) {
-      emailjs.send(_SID, _WID, {
-        'to-email': email,
-        naam,
-      }, { publicKey: _PK }).catch(() => {})
+      emailjs.send(_SID, _WID, { to_email: email, naam }, { publicKey: _PK }).catch(() => {})
     }
-    // Don't auto-login — WelcomeGate shows welcome screen first
     return { success: true, naam }
   }
 
@@ -142,7 +169,7 @@ export function AuthProvider({ children }) {
   async function requestLoginOtp(email) {
     const ul = _get(_K.ul) || []
     const found = ul.find(u => u.e.toLowerCase() === email.toLowerCase())
-    // If no account found, still send OTP — will create account on verify
+    _log('otp', { email: email.toLowerCase(), details: 'OTP requested' })
     return _sendOtp(email, found?.n || 'Klant', !found)
   }
 
@@ -186,6 +213,7 @@ export function AuthProvider({ children }) {
     const safe = { naam: found.n, email: found.e }
     setUser(safe)
     _set(_K.us, safe)
+    _log('login', { naam: found.n, email: found.e, details: 'OTP login' })
     return { success: true }
   }
 
