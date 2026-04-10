@@ -13,6 +13,7 @@ import TeamPage from './pages/TeamPage'
 import ContactPage from './pages/ContactPage'
 import GaleriePage from './pages/GaleriePage'
 import FAQPage from './pages/FAQPage'
+import DienstenPage from './pages/DienstenPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -82,6 +83,7 @@ function SiteContent() {
         <Routes>
           <Route path="/"          element={<HomePage />} />
           <Route path="/over-ons"  element={<OverOnsPage />} />
+          <Route path="/diensten"  element={<DienstenPage />} />
           <Route path="/prijzen"   element={<PrijzenPage />} />
           <Route path="/team"      element={<TeamPage />} />
           <Route path="/galerie"   element={<GaleriePage />} />

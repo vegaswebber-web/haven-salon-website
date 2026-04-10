@@ -46,9 +46,9 @@ export default function AuthPanel({ onClose }) {
   }
 
   // ── LOGIN: wachtwoord ─────────────────────────────────────────────────────
-  function handleLoginPw(e) {
+  async function handleLoginPw(e) {
     e.preventDefault()
-    const res = login(loginEmail, loginPw)
+    const res = await login(loginEmail, loginPw)
     if (res.error) setMsg({ type: 'error', text: res.error })
     else setTimeout(onClose, 700)
   }

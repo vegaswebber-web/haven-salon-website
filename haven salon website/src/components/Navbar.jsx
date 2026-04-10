@@ -42,6 +42,7 @@ export default function Navbar() {
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Over Ons', to: '/over-ons' },
+    { label: 'Diensten', to: '/diensten' },
     { label: 'Tarieven', to: '/prijzen' },
     { label: 'Team', to: '/team' },
     { label: 'Galerie', to: '/galerie' },
