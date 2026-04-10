@@ -35,8 +35,7 @@ export default function Footer() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/over-ons">Over Ons</Link></li>
-              <li><Link to="/diensten">Diensten</Link></li>
-              <li><Link to="/prijzen">Tarieven</Link></li>
+<li><Link to="/prijzen">Tarieven</Link></li>
               <li><Link to="/team">Team</Link></li>
               <li><Link to="/galerie">Galerie</Link></li>
               <li><Link to="/faq">FAQ</Link></li>
