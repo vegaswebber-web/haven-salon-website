@@ -1,6 +1,11 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
+
+const _SID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const _CTD = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID
+const _PK  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const { user, saveContact } = useAuth()
@@ -16,9 +21,23 @@ export default function Contact() {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    saveContact({ ...form, datum: new Date().toLocaleString('nl-NL') })
+    const datum = new Date().toLocaleString('nl-NL')
+    saveContact({ ...form, datum })
+    if (_SID && _CTD && _PK) {
+      try {
+        await emailjs.send(_SID, _CTD, {
+          from_naam:     form.naam,
+          from_email:    form.email,
+          telefoon:      form.telefoon || '—',
+          bericht:       form.bericht,
+          datum,
+        }, { publicKey: _PK })
+      } catch (err) {
+        console.error('[EmailJS contact error]', err)
+      }
+    }
     setStatus('success')
   }
 
@@ -73,7 +92,7 @@ export default function Contact() {
             </div>
 
             <div className="contact-social">
-              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
+              <a href="https://instagram.com/abdulla_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
             </div>
           </div>
 

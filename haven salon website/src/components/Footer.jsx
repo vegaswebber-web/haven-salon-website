@@ -37,6 +37,8 @@ export default function Footer() {
               <li><Link to="/over-ons">Over Ons</Link></li>
               <li><Link to="/prijzen">Tarieven</Link></li>
               <li><Link to="/team">Team</Link></li>
+              <li><Link to="/galerie">Galerie</Link></li>
+              <li><Link to="/faq">FAQ</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
@@ -58,17 +60,13 @@ export default function Footer() {
               <li><a href="mailto:info@havensalon.nl">info@havensalon.nl</a></li>
             </ul>
             <div className="footer-social">
-              <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">IG</a>
+              <a href="https://instagram.com/abdulla_kapper" target="_blank" rel="noreferrer">IG</a>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
           <p>© {year} Haven Salon Volendam. Alle rechten voorbehouden.</p>
-          <div className="footer-links">
-            <a href="#">Privacybeleid</a>
-            <a href="#">Algemene voorwaarden</a>
-          </div>
         </div>
       </div>
     </footer>

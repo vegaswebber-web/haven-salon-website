@@ -19,7 +19,7 @@
   font-size: clamp(80px, 20vw, 140px);
   font-weight: 700;
   color: var(--gold);
-  opacity: 0.15;
+  opacity: 0.4;
   line-height: 1;
   font-family: 'Cormorant Garamond', serif;
 }

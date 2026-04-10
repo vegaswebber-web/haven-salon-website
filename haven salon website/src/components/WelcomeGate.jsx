@@ -25,9 +25,9 @@ export default function WelcomeGate({ onGuest }) {
   function go(m) { setMode(m); setMsg(null) }
 
   // ── Login ─────────────────────────────────────────────────────────────────
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault()
-    const res = login(email, pw)
+    const res = await login(email, pw)
     if (res.error) setMsg({ type: 'error', text: res.error })
   }
 
@@ -70,10 +70,10 @@ export default function WelcomeGate({ onGuest }) {
   }
 
   // ── Nieuw wachtwoord instellen ────────────────────────────────────────────
-  function handleNewPw(e) {
+  async function handleNewPw(e) {
     e.preventDefault()
     if (newPw !== newPw2) return setMsg({ type: 'error', text: 'Wachtwoorden komen niet overeen.' })
-    const res = resetPassword(email, newPw)
+    const res = await resetPassword(email, newPw)
     if (res.error) setMsg({ type: 'error', text: res.error })
     // resetPassword sets user → WelcomeGate unmounts automatically
   }

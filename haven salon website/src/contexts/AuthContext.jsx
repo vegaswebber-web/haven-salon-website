@@ -25,6 +25,17 @@ function _get(k)     { const r = localStorage.getItem(k); return r ? _dec(r) : n
 function _set(k, v)  { localStorage.setItem(k, _enc(v)) }
 function _del(k)     { localStorage.removeItem(k) }
 
+// ── SHA-256 wachtwoord hash ───────────────────────────────────────────────────
+async function _hash(pw) {
+  if (!pw) return ''
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw))
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
+  } catch {
+    return pw
+  }
+}
+
 // ── EmailJS ───────────────────────────────────────────────────────────────────
 const _SID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const _TID = import.meta.env.VITE_EMAILJS_OTP_TEMPLATE_ID
@@ -62,9 +73,9 @@ export function AuthProvider({ children }) {
   // Verify admin token on load
   useEffect(() => {
     if (!_at) return
-    const _lp = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
+    const _lp = import.meta.env.VITE_ADMIN_PASSWORD
     if (!_AU) {
-      if (_at === _lp) { setIsAdmin(true) }
+      if (_lp && _at === _lp) { setIsAdmin(true) }
       else { _setAt(''); _del(_K.at) }
       return
     }
@@ -90,10 +101,16 @@ export function AuthProvider({ children }) {
 
   // ── Password login ──────────────────────────────────────────────────────────
   async function login(email, password) {
+    const hashedPw = await _hash(password)
     // 1. Check localStorage first
     const ul = _get(_K.ul) || []
-    const local = ul.find(u => u.e.toLowerCase() === email.toLowerCase() && u.p === password)
+    // Accept both hashed and legacy plaintext (migration: upgrade on match)
+    const local = ul.find(u => u.e.toLowerCase() === email.toLowerCase() && (u.p === hashedPw || u.p === password))
     if (local) {
+      if (local.p === password && password !== hashedPw) {
+        local.p = hashedPw
+        _set(_K.ul, ul)
+      }
       const safe = { naam: local.n, email: local.e }
       setUser(safe); _set(_K.us, safe)
       _log('login', { naam: local.n, email: local.e })
@@ -110,8 +127,7 @@ export function AuthProvider({ children }) {
         if (r.ok) {
           const data = await r.json()
           const safe = { naam: data.naam, email: data.email }
-          // Restore to localStorage
-          ul.push({ n: data.naam, e: data.email, p: password })
+          ul.push({ n: data.naam, e: data.email, p: hashedPw })
           _set(_K.ul, ul)
           setUser(safe); _set(_K.us, safe)
           return { success: true }
@@ -126,7 +142,8 @@ export function AuthProvider({ children }) {
     if (ul.find(u => u.e.toLowerCase() === email.toLowerCase())) {
       return { error: 'Dit e-mailadres is al in gebruik.' }
     }
-    ul.push({ n: naam, e: email, p: password })
+    const hashedPw = await _hash(password)
+    ul.push({ n: naam, e: email, p: hashedPw })
     _set(_K.ul, ul)
     if (_AU) {
       fetch(`${_AU}/api/register`, {
@@ -227,11 +244,11 @@ export function AuthProvider({ children }) {
     return { success: true, naam: found.n }
   }
 
-  function resetPassword(email, newPassword) {
+  async function resetPassword(email, newPassword) {
     const ul = _get(_K.ul) || []
     const idx = ul.findIndex(u => u.e.toLowerCase() === email.toLowerCase())
     if (idx === -1) return { error: 'Account niet gevonden.' }
-    ul[idx].p = newPassword
+    ul[idx].p = await _hash(newPassword)
     _set(_K.ul, ul)
     const safe = { naam: ul[idx].n, email: ul[idx].e }
     setUser(safe)
@@ -241,9 +258,9 @@ export function AuthProvider({ children }) {
 
   // ── Admin ───────────────────────────────────────────────────────────────────
   async function adminLogin(password) {
-    const _lp = import.meta.env.VITE_ADMIN_PASSWORD || 'haven2024'
+    const _lp = import.meta.env.VITE_ADMIN_PASSWORD
     if (!_AU) {
-      if (password === _lp) {
+      if (_lp && password === _lp) {
         _setAt(password); setIsAdmin(true); _set(_K.at, password)
         return { success: true }
       }
@@ -304,7 +321,7 @@ export function AuthProvider({ children }) {
   function deleteContact(id) { _set(_K.cl, (_get(_K.cl) || []).filter(c => c.id !== id)) }
 
   // ── Read users for admin panel ───────────────────────────────────────────────
-  function getUsers() { return (_get(_K.ul) || []).map(u => ({ naam: u.n, email: u.e, password: u.p })) }
+  function getUsers() { return (_get(_K.ul) || []).map(u => ({ naam: u.n, email: u.e })) }
 
   function deleteUser(email) {
     const ul = (_get(_K.ul) || []).filter(u => u.e !== email)
