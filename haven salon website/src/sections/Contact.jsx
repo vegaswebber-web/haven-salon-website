@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
 
 const _OW = 'https://haven-otp-worker.vegaswebber.workers.dev'
 
 export default function Contact() {
-  const { user } = useAuth()
   const [form, setForm] = useState({
-    naam:     user?.naam  || '',
-    email:    user?.email || '',
+    naam:     '',
+    email:    '',
     telefoon: '',
     bericht:  '',
   })

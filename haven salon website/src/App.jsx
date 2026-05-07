@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
-import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { BookingProvider, useBooking } from './contexts/BookingContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -13,11 +12,8 @@ import TeamPage from './pages/TeamPage'
 import ContactPage from './pages/ContactPage'
 import GaleriePage from './pages/GaleriePage'
 import FAQPage from './pages/FAQPage'
-import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
-import AdminPage from './pages/AdminPage'
 import WhatsAppButton from './components/WhatsAppButton'
-import WelcomeGate from './components/WelcomeGate'
 import TopBanner from './components/TopBanner'
 import './App.css'
 
@@ -43,53 +39,23 @@ function ScrollReveal() {
 
 function SiteContent() {
   const location = useLocation()
-  const { siteStatus, isAdmin, user } = useAuth()
   const { open: bookingOpen } = useBooking()
-  const [isGuest, setIsGuest] = useState(() => !!sessionStorage.getItem('_hxg'))
-  function handleGuest() { sessionStorage.setItem('_hxg', '1'); setIsGuest(true) }
-
-  // Admin can always preview the full site via ?preview=1
-  const params = new URLSearchParams(window.location.search)
-  const preview = params.get('preview') === '1'
-
-  if (siteStatus === null) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--bg-3)',
-        color: 'var(--gold)',
-        fontFamily: 'Poppins',
-        fontSize: '13px',
-        letterSpacing: '2px',
-      }}>
-        HAVEN SALON
-      </div>
-    )
-  }
-
-  if (siteStatus === 'coming_soon' && !preview) {
-    return <ComingSoonPage />
-  }
 
   return (
     <>
-      {!user && !isGuest && <WelcomeGate onGuest={handleGuest} />}
       {location.pathname === '/' && <TopBanner />}
       <ScrollReveal />
       <Navbar />
       <main key={location.pathname} className="page-fade">
         <Routes>
-          <Route path="/"          element={<HomePage />} />
-          <Route path="/over-ons"  element={<OverOnsPage />} />
-<Route path="/prijzen"   element={<PrijzenPage />} />
-          <Route path="/team"      element={<TeamPage />} />
-          <Route path="/galerie"   element={<GaleriePage />} />
-          <Route path="/faq"       element={<FAQPage />} />
-          <Route path="/contact"   element={<ContactPage />} />
-          <Route path="*"          element={<NotFoundPage />} />
+          <Route path="/"         element={<HomePage />} />
+          <Route path="/over-ons" element={<OverOnsPage />} />
+          <Route path="/prijzen"  element={<PrijzenPage />} />
+          <Route path="/team"     element={<TeamPage />} />
+          <Route path="/galerie"  element={<GaleriePage />} />
+          <Route path="/faq"      element={<FAQPage />} />
+          <Route path="/contact"  element={<ContactPage />} />
+          <Route path="*"         element={<NotFoundPage />} />
         </Routes>
       </main>
       <Footer />
@@ -99,22 +65,14 @@ function SiteContent() {
   )
 }
 
-function AppRouter() {
-  const location = useLocation()
-  if (location.pathname.startsWith('/admin')) return <AdminPage />
-  return <SiteContent />
-}
-
 export default function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <BookingProvider>
-          <BrowserRouter>
-            <AppRouter />
-          </BrowserRouter>
-        </BookingProvider>
-      </AuthProvider>
+      <BookingProvider>
+        <BrowserRouter>
+          <SiteContent />
+        </BrowserRouter>
+      </BookingProvider>
     </ThemeProvider>
   )
 }
