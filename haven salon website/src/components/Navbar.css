@@ -5,8 +5,11 @@
   right: 0;
   z-index: 1000;
   padding: 16px 0;
-  transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease, top 0.38s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+[data-banner="open"]   .navbar { top: 66px; }
+[data-banner="closed"] .navbar { top: 14px; }
 
 .navbar.scrolled {
   background: rgba(15, 15, 15, 0.96);
@@ -135,6 +138,14 @@
   font-size: 13px;
   font-weight: 700;
   color: var(--gold);
+}
+
+.navbar-user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--gold);
 }
 
 /* Hamburger */

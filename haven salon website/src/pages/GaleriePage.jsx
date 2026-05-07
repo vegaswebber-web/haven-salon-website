@@ -7,6 +7,7 @@ export default function GaleriePage() {
       <PageBanner
         title="Galerie"
         subtitle="Een beeld zegt meer dan duizend woorden. Bekijk een selectie van ons werk."
+        center
       />
       <Gallery />
     </>

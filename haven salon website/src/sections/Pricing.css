@@ -62,11 +62,13 @@
   align-items: baseline;
   gap: 4px;
   font-size: 0.85rem;
+  flex-wrap: nowrap;
 }
 
 .pricing-label {
   color: rgba(255,255,255,0.6);
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .pricing-dots {
@@ -75,7 +77,7 @@
   margin: 0 8px;
   position: relative;
   top: -3px;
-  min-width: 20px;
+  min-width: 16px;
 }
 
 .pricing-price {
@@ -83,6 +85,12 @@
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .pricing-dots { min-width: 8px; }
+  .pricing-card { padding: 28px 20px; }
 }
 
 .pricing-note {

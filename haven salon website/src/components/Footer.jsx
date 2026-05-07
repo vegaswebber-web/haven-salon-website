@@ -35,7 +35,7 @@ export default function Footer() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/over-ons">Over Ons</Link></li>
-<li><Link to="/prijzen">Tarieven</Link></li>
+              <li><Link to="/prijzen">Tarieven</Link></li>
               <li><Link to="/team">Team</Link></li>
               <li><Link to="/galerie">Galerie</Link></li>
               <li><Link to="/faq">FAQ</Link></li>
@@ -56,7 +56,7 @@ export default function Footer() {
             <h4>Contact</h4>
             <ul>
               <li>Burgstraat 1, Volendam</li>
-              <li><a href="tel:+31684700480">+31 (0)6 847 004 80</a></li>
+              <li><a href="tel:+31299235355">+31 299 235 355</a></li>
               <li><a href="mailto:info@havensalon.nl">info@havensalon.nl</a></li>
             </ul>
             <div className="footer-social">

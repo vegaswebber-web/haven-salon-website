@@ -27,6 +27,9 @@ const categories = [
     items: [
       { label: 'Lang haar knippen + föhnen', price: '€ 45' },
       { label: 'Kort / medium haar knippen', price: '€ 27' },
+      { label: 'Wenkbrouwen & epileren', price: '€ 15' },
+      { label: 'Wenkbrouwen & epileren met verfen', price: '€ 22' },
+      { label: 'Hele gezicht epileren', price: '€ 25' },
     ],
   },
 ]

@@ -15,8 +15,10 @@ import GaleriePage from './pages/GaleriePage'
 import FAQPage from './pages/FAQPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AdminPage from './pages/AdminPage'
 import WhatsAppButton from './components/WhatsAppButton'
 import WelcomeGate from './components/WelcomeGate'
+import TopBanner from './components/TopBanner'
 import './App.css'
 
 function ScrollReveal() {
@@ -44,7 +46,6 @@ function SiteContent() {
   const { siteStatus, isAdmin, user } = useAuth()
   const { open: bookingOpen } = useBooking()
   const [isGuest, setIsGuest] = useState(() => !!sessionStorage.getItem('_hxg'))
-
   function handleGuest() { sessionStorage.setItem('_hxg', '1'); setIsGuest(true) }
 
   // Admin can always preview the full site via ?preview=1
@@ -76,6 +77,7 @@ function SiteContent() {
   return (
     <>
       {!user && !isGuest && <WelcomeGate onGuest={handleGuest} />}
+      {location.pathname === '/' && <TopBanner />}
       <ScrollReveal />
       <Navbar />
       <main key={location.pathname} className="page-fade">
@@ -97,13 +99,19 @@ function SiteContent() {
   )
 }
 
+function AppRouter() {
+  const location = useLocation()
+  if (location.pathname.startsWith('/admin')) return <AdminPage />
+  return <SiteContent />
+}
+
 export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <BookingProvider>
           <BrowserRouter>
-            <SiteContent />
+            <AppRouter />
           </BrowserRouter>
         </BookingProvider>
       </AuthProvider>

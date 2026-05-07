@@ -47,3 +47,33 @@
   max-width: 480px;
   line-height: 1.8;
 }
+
+.page-banner--center .page-banner-inner {
+  text-align: center;
+}
+
+.page-banner--center .breadcrumb {
+  justify-content: center;
+}
+
+.page-banner--center .page-banner-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Light theme: bg-3 is dark brown → force light text */
+[data-theme="light"] .page-banner-title {
+  color: #f0ece6;
+}
+
+[data-theme="light"] .breadcrumb {
+  color: rgba(240, 236, 230, 0.55);
+}
+
+[data-theme="light"] .breadcrumb a {
+  color: var(--gold);
+}
+
+[data-theme="light"] .page-banner-sub {
+  color: rgba(240, 236, 230, 0.55);
+}

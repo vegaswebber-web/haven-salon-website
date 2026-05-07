@@ -1,14 +1,11 @@
 import { useState } from 'react'
-import emailjs from '@emailjs/browser'
 import { useAuth } from '../contexts/AuthContext'
 import './Contact.css'
 
-const _SID = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const _CTD = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID
-const _PK  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const _OW = 'https://haven-otp-worker.vegaswebber.workers.dev'
 
 export default function Contact() {
-  const { user, saveContact } = useAuth()
+  const { user } = useAuth()
   const [form, setForm] = useState({
     naam:     user?.naam  || '',
     email:    user?.email || '',
@@ -24,20 +21,11 @@ export default function Contact() {
   async function handleSubmit(e) {
     e.preventDefault()
     const datum = new Date().toLocaleString('nl-NL')
-    saveContact({ ...form, datum })
-    if (_SID && _CTD && _PK) {
-      try {
-        await emailjs.send(_SID, _CTD, {
-          from_naam:     form.naam,
-          from_email:    form.email,
-          telefoon:      form.telefoon || '—',
-          bericht:       form.bericht,
-          datum,
-        }, { publicKey: _PK })
-      } catch (err) {
-        console.error('[EmailJS contact error]', err)
-      }
-    }
+    fetch(`${_OW}/send-contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form, datum }),
+    }).catch(() => {})
     setStatus('success')
   }
 
@@ -50,45 +38,62 @@ export default function Contact() {
             <h2 className="section-title">Maak een afspraak</h2>
             <div className="divider" />
             <p className="section-subtitle">
-              Bel ons, stuur een WhatsApp of vul het formulier in.
+              Bel ons of vul het formulier in.
               We nemen zo snel mogelijk contact met je op.
             </p>
 
             <div className="contact-details">
               <div className="contact-detail">
-                <span className="detail-icon">📍</span>
+                <span className="detail-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-8-6.5-8-12a8 8 0 1 1 16 0c0 5.5-8 12-8 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                </span>
                 <div>
                   <strong>Adres</strong>
                   <p>Burgstraat 1, Volendam</p>
                 </div>
               </div>
               <div className="contact-detail">
-                <span className="detail-icon">📞</span>
+                <span className="detail-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.82 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.09 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+                </span>
                 <div>
-                  <strong>Telefoon / WhatsApp</strong>
-                  <p>
-                    <a href="tel:+31684700480">+31 (0)6 847 004 80</a>
-                    {' · '}
-                    <a href="https://wa.me/31684700480" target="_blank" rel="noreferrer">WhatsApp</a>
-                  </p>
+                  <strong>Telefoon</strong>
+                  <p><a href="tel:+31299235355">+31 299 235 355</a></p>
                 </div>
               </div>
               <div className="contact-detail">
-                <span className="detail-icon">📧</span>
+                <span className="detail-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+                </span>
                 <div>
                   <strong>E-mail</strong>
                   <p><a href="mailto:info@havensalon.nl">info@havensalon.nl</a></p>
                 </div>
               </div>
               <div className="contact-detail">
-                <span className="detail-icon">🕐</span>
+                <span className="detail-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </span>
                 <div>
                   <strong>Openingstijden</strong>
-                  <p>Ma t/m vr: 09:00 – 18:00</p>
-                  <p>Zaterdag: 09:00 – 17:00</p>
-                  <p>Zondag: Gesloten</p>
+                  <p>Maandag: Gesloten</p>
+                  <p>Dinsdag t/m Zaterdag: 09:00 – 18:00</p>
+                  <p>Zondag: 11:00 – 17:00</p>
                 </div>
               </div>
+            </div>
+
+            <div className="contact-map">
+              <iframe
+                title="Haven Salon locatie"
+                src="https://maps.google.com/maps?q=52.4983,5.0753&output=embed&z=17"
+                width="100%"
+                height="200"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
 
             <div className="contact-social">

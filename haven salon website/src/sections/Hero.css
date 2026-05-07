@@ -21,7 +21,11 @@
   align-items: center;
   padding-top: 110px;
   padding-bottom: 70px;
+  transition: padding-top 0.36s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+[data-banner="open"]   .hero-inner { padding-top: 178px; }
+[data-banner="closed"] .hero-inner { padding-top: 124px; }
 
 .hero-content {
   animation: fadeUp 0.9s ease both;

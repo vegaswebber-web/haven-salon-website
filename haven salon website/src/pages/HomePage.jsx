@@ -5,6 +5,7 @@ import './HomePage.css'
 
 export default function HomePage() {
   const { openBooking } = useBooking()
+
   return (
     <>
       <Hero />
@@ -17,7 +18,7 @@ export default function HomePage() {
               <img src="/halimm.jpg" alt="Haven Salon" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
             </div>
             <div className="home-about-badge">
-              <span className="badge-num">7+</span>
+              <span className="badge-num">10+</span>
               <span className="badge-label">Jaar<br/>ervaring</span>
             </div>
           </div>

@@ -128,6 +128,25 @@
 
 .about-content { padding-bottom: 40px; }
 
+.about-text {
+  font-size: 0.93rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+.about-text strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.about-text--opening {
+  border-left: 2px solid var(--gold);
+  padding-left: 14px;
+  margin-top: 6px;
+  color: var(--text);
+}
+
 .about-highlights {
   margin-top: 36px;
   display: grid;

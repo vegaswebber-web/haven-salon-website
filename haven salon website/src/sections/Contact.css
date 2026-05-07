@@ -23,7 +23,13 @@
   align-items: flex-start;
 }
 
-.detail-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.detail-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--gold);
+  display: flex;
+  align-items: flex-start;
+}
 
 .contact-detail strong {
   display: block;
@@ -47,6 +53,13 @@
 }
 
 .contact-detail a:hover { color: var(--gold-light); }
+
+.contact-map {
+  margin-top: 28px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  filter: grayscale(30%);
+}
 
 .contact-social {
   display: flex;

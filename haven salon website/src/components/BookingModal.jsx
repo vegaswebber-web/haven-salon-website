@@ -1,6 +1,17 @@
 import { useBooking } from '../contexts/BookingContext'
 import './BookingModal.css'
 
+function CloseBtn({ onClick }) {
+  return (
+    <button className="bm-close" onClick={onClick} aria-label="Sluiten">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.8"
+          strokeLinecap="round"/>
+      </svg>
+    </button>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────
 // Vul hier jouw Salonhub booking-URL in (via .env: VITE_SALONHUB_URL)
 // Voorbeeld: https://www.salonhub.nl/boek/haven-salon-volendam
@@ -19,7 +30,7 @@ export default function BookingModal() {
             <span className="bm-logo">Haven Salon</span>
             <span className="bm-header-title">Afspraak maken</span>
           </div>
-          <button className="bm-close" onClick={closeBooking} aria-label="Sluiten">✕</button>
+          <CloseBtn onClick={closeBooking} />
         </div>
 
         {SALONHUB_URL ? (
@@ -34,15 +45,12 @@ export default function BookingModal() {
             <div className="bm-setup-icon">✂</div>
             <h3>Afspraak maken</h3>
             <p>
-              Neem contact op via telefoon, WhatsApp of e-mail en
+              Neem contact op via telefoon of e-mail en
               we plannen jouw afspraak zo snel mogelijk in.
             </p>
             <div className="bm-contact-options">
-              <a href="https://wa.me/31684700480" target="_blank" rel="noreferrer" className="bm-contact-btn bm-contact-btn--wa">
-                WhatsApp
-              </a>
-              <a href="tel:+31684700480" className="bm-contact-btn">
-                +31 (0)6 847 004 80
+              <a href="tel:+31299235355" className="bm-contact-btn">
+                +31 299 235 355
               </a>
               <a href="mailto:info@havensalon.nl" className="bm-contact-btn">
                 info@havensalon.nl

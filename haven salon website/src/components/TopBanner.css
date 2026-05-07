@@ -1,0 +1,113 @@
+/* ── Wrapper ─────────────────────────────────────────────────────────────────── */
+.tb-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Collapsible content ────────────────────────────────────────────────────── */
+.tb-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 0 20px;
+  overflow: hidden;
+  transition: height 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tb-wrap--open  .tb-content { height: 52px; opacity: 1; }
+.tb-wrap--closed .tb-content { height: 0;    opacity: 0; pointer-events: none; }
+
+/* ── Label ──────────────────────────────────────────────────────────────────── */
+.tb-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.67rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.65;
+  white-space: nowrap;
+}
+
+/* ── Countdown ──────────────────────────────────────────────────────────────── */
+.tb-cd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tb-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 30px;
+}
+
+.tb-num {
+  font-family: 'Volkhov', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+  animation: tb-fade 0.25s ease both;
+}
+
+@keyframes tb-fade {
+  from { opacity: 0.3; transform: translateY(-4px); }
+  to   { opacity: 1;   transform: translateY(0); }
+}
+
+.tb-lbl {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.48rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.45;
+}
+
+.tb-sep {
+  font-family: 'Volkhov', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  opacity: 0.25;
+  line-height: 1;
+  padding-bottom: 10px;
+}
+
+/* ── Toggle strip ────────────────────────────────────────────────────────────── */
+.tb-toggle {
+  width: 100%;
+  height: 14px;
+  background: var(--bg-3);
+  border: none;
+  border-top: 1px solid var(--border);
+  color: var(--gold);
+  opacity: 0.35;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+.tb-toggle:hover { opacity: 0.8; }
+
+.tb-arrow {
+  display: block;
+  transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tb-arrow--up   { transform: rotate(0deg); }
+.tb-arrow--down { transform: rotate(180deg); }
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .tb-label { display: none; }
+  .tb-content { gap: 16px; }
+}

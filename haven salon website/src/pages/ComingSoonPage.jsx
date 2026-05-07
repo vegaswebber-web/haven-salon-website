@@ -1,24 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useEffect, useState } from 'react'
 import { useBooking } from '../contexts/BookingContext'
-import AdminWidget from '../components/AdminWidget'
 import BookingModal from '../components/BookingModal'
 import './ComingSoonPage.css'
 
 export default function ComingSoonPage() {
-  const [adminOpen, setAdminOpen] = useState(false)
-  const [adminPw, setAdminPw] = useState('')
-  const [pwVisible, setPwVisible] = useState(false)
-  const [pwMsg, setPwMsg] = useState(null)
-  const [loading, setLoading] = useState(false)
-
-  const { isAdmin, adminLogin } = useAuth()
   const { open: bookingOpen, openBooking } = useBooking()
 
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
-    const target = new Date('2026-05-10T00:00:00+02:00').getTime()
+    const target = new Date('2026-06-12T00:00:00+02:00').getTime()
     function tick() {
       const diff = target - Date.now()
       if (diff <= 0) {
@@ -36,20 +27,6 @@ export default function ComingSoonPage() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [])
-
-  async function handleAdminLogin(e) {
-    e.preventDefault()
-    setLoading(true)
-    setPwMsg(null)
-    const res = await adminLogin(adminPw)
-    setLoading(false)
-    if (res.error) {
-      setPwMsg(res.error)
-    } else {
-      setPwVisible(false)
-      setAdminOpen(true)
-    }
-  }
 
   return (
     <div className="cs-page">
@@ -100,7 +77,7 @@ export default function ComingSoonPage() {
           </div>
           <div className="cs-info-item">
             <span>📞</span>
-            <a href="tel:+31684700480">+31 (0)6 847 004 80</a>
+            <a href="tel:+31299235355">+31 299 235 355</a>
           </div>
           <div className="cs-info-item">
             <span>📧</span>
@@ -113,37 +90,6 @@ export default function ComingSoonPage() {
         </div>
       </div>
 
-      {/* Hidden admin access — bottom right corner */}
-      <div className="cs-admin-corner">
-        {isAdmin ? (
-          <button className="cs-admin-gear" onClick={() => setAdminOpen(true)} title="Admin beheer">
-            ⚙
-          </button>
-        ) : (
-          <button className="cs-admin-gear" onClick={() => setPwVisible(v => !v)} title="Admin">
-            ⚙
-          </button>
-        )}
-
-        {pwVisible && !isAdmin && (
-          <form className="cs-admin-form" onSubmit={handleAdminLogin}>
-            <input
-              type="password"
-              placeholder="Admin wachtwoord"
-              value={adminPw}
-              onChange={e => setAdminPw(e.target.value)}
-              autoFocus
-              required
-            />
-            {pwMsg && <span className="cs-admin-err">{pwMsg}</span>}
-            <button type="submit" disabled={loading}>
-              {loading ? '…' : 'Inloggen'}
-            </button>
-          </form>
-        )}
-      </div>
-
-      {adminOpen && <AdminWidget onClose={() => setAdminOpen(false)} />}
       {bookingOpen && <BookingModal />}
     </div>
   )

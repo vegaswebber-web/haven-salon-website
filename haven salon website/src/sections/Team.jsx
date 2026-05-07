@@ -3,7 +3,7 @@ import './Team.css'
 
 const team = [
   {
-    name: 'Abdulhalim Al Hussein',
+    name: 'Abdulla',
     role: 'Eigenaar & Kapper',
     specialty: 'Knippen, stylen & baard',
     initials: 'AH',

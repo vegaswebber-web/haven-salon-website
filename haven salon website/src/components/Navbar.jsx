@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import AuthPanel from './AuthPanel'
-import AdminWidget from './AdminWidget'
+import SettingsModal from './SettingsModal'
 import { useAuth } from '../contexts/AuthContext'
 import { useBooking } from '../contexts/BookingContext'
 import './Navbar.css'
@@ -11,9 +11,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
-  const [adminOpen, setAdminOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const location = useLocation()
-  const { user, isAdmin } = useAuth()
+  const { user } = useAuth()
+  const userInitial = user
+    ? (user.naam && user.naam !== 'Klant' ? user.naam : user.email?.split('@')[0] || '?')[0].toUpperCase()
+    : null
   const { openBooking } = useBooking()
 
   useEffect(() => {
@@ -84,23 +87,15 @@ export default function Navbar() {
             ))}
             <ThemeToggle />
 
-            {isAdmin && (
-              <button
-                className="navbar-admin-btn"
-                onClick={() => setAdminOpen(v => !v)}
-                title="Admin beheer"
-              >
-                ⚙
-              </button>
-            )}
-
             <button
               className="navbar-auth-btn"
               onClick={() => setAuthOpen(true)}
-              title={user ? `Ingelogd als ${user.naam}` : 'Inloggen'}
+              title={user ? `Ingelogd als ${user.naam && user.naam !== 'Klant' ? user.naam : user.email}` : 'Inloggen'}
             >
               {user
-                ? <span className="navbar-user-initial">{user.naam?.[0]?.toUpperCase()}</span>
+                ? (user.avatar
+                    ? <img src={user.avatar} className="navbar-user-avatar" alt="" />
+                    : <span className="navbar-user-initial">{userInitial}</span>)
                 : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
               }
             </button>
@@ -137,18 +132,14 @@ export default function Navbar() {
         </nav>
         <div className="mobile-menu-actions">
           <ThemeToggle />
-          {isAdmin && (
-            <button
-              className="navbar-admin-btn"
-              onClick={() => { setAdminOpen(v => !v); closeMenu() }}
-            >⚙</button>
-          )}
           <button
             className="navbar-auth-btn"
             onClick={() => { setAuthOpen(true); closeMenu() }}
           >
             {user
-              ? <span className="navbar-user-initial">{user.naam?.[0]?.toUpperCase()}</span>
+              ? (user.avatar
+                  ? <img src={user.avatar} className="navbar-user-avatar" alt="" />
+                  : <span className="navbar-user-initial">{userInitial}</span>)
               : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
             }
           </button>
@@ -161,8 +152,11 @@ export default function Navbar() {
         </button>
       </div>
 
-      {authOpen && <AuthPanel onClose={() => setAuthOpen(false)} />}
-      {adminOpen && <AdminWidget onClose={() => setAdminOpen(false)} />}
+      {authOpen && <AuthPanel
+        onClose={() => setAuthOpen(false)}
+        onSettings={() => { setAuthOpen(false); setSettingsOpen(true) }}
+      />}
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </>
   )
 }
