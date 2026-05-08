@@ -15,6 +15,8 @@ import FAQPage from './pages/FAQPage'
 import NotFoundPage from './pages/NotFoundPage'
 import WhatsAppButton from './components/WhatsAppButton'
 import TopBanner from './components/TopBanner'
+import CookieConsent from './components/CookieConsent'
+import OpeningConfetti from './components/OpeningConfetti'
 import './App.css'
 
 function ScrollReveal() {
@@ -22,7 +24,7 @@ function ScrollReveal() {
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('section'))
     sections.slice(1).forEach(s => s.classList.add('reveal'))
-    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid, .service-card, .gallery-item, .faq-item, .team-card')
+    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid, .service-card, .gallery-item, .faq-item, .team-card, .review-card')
     cards.forEach(c => c.classList.add('reveal'))
 
     const obs = new IntersectionObserver(entries => {
@@ -45,6 +47,7 @@ function SiteContent() {
     <>
       {location.pathname === '/' && <TopBanner />}
       <ScrollReveal />
+      <OpeningConfetti />
       <Navbar />
       <main key={location.pathname} className="page-fade">
         <Routes>
@@ -61,6 +64,7 @@ function SiteContent() {
       <Footer />
       {bookingOpen && <BookingModal />}
       <WhatsAppButton />
+      <CookieConsent />
     </>
   )
 }

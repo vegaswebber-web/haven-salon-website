@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Hero from '../sections/Hero'
+import Testimonials from '../sections/Testimonials'
 import { useBooking } from '../contexts/BookingContext'
 import './HomePage.css'
 
@@ -37,6 +38,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       {/* CTA banner */}
       <section className="home-cta">
