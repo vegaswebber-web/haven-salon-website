@@ -41,6 +41,12 @@
   background: rgba(201, 169, 110, 0.04);
 }
 
+.pricing-card-icon {
+  color: var(--gold);
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
 .pricing-cat-title {
   font-family: 'Volkhov', serif;
   font-size: 1.1rem;
