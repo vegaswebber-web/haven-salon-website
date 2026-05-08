@@ -46,9 +46,9 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Openingstijden</h4>
             <ul className="hours-list">
-              <li><span>Ma – Vr</span><span>09:00 – 18:00</span></li>
-              <li><span>Zaterdag</span><span>09:00 – 17:00</span></li>
-              <li><span>Zondag</span><span>Gesloten</span></li>
+              <li><span>Maandag</span><span>Gesloten</span></li>
+              <li><span>Di – Za</span><span>09:00 – 18:00</span></li>
+              <li><span>Zondag</span><span>11:00 – 17:00</span></li>
             </ul>
           </div>
 

@@ -59,6 +59,7 @@
 .page-banner--center .page-banner-sub {
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 /* Light theme: bg-3 is dark brown → force light text */

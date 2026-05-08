@@ -1,10 +1,44 @@
 import './About.css'
 
+const IconScissors = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+    <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+    <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+    <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+  </svg>
+)
+
+const IconUsers = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="7" r="3"/>
+    <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+    <circle cx="17" cy="7" r="3" opacity=".5"/>
+    <path d="M21 21v-2a4 4 0 0 0-3-3.87" opacity=".5"/>
+  </svg>
+)
+
+const IconRazor = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 3h14a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+    <line x1="7" y1="8" x2="7" y2="14"/><line x1="10" y1="8" x2="10" y2="14"/>
+    <line x1="13" y1="8" x2="13" y2="14"/><line x1="16" y1="8" x2="16" y2="14"/>
+    <path d="M6 14h12l-1.5 7H7.5L6 14z"/>
+  </svg>
+)
+
+const IconLeaf = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+  </svg>
+)
+
 const highlights = [
-  { icon: '✂️', title: 'Knippen & Stylen', desc: 'Van een strakke fade tot een klassieke coupe — Abdulla luistert naar wat jij wilt en levert elke keer het resultaat dat bij jou past.' },
-  { icon: '👩', title: 'Dames & Heren', desc: 'Zowel dames- als herenkapsels behoren tot het vakgebied van Abdulla. Iedereen is welkom bij Haven Salon.' },
-  { icon: '🧔', title: 'Baardverzorging', desc: 'Een goed verzorgde baard maakt het geheel compleet. Abdulla shapt, trimt en finisht je baard tot in de puntjes.' },
-  { icon: '💆', title: 'Behandelingen', desc: 'Met voedende maskers en gerichte hoofdhuidverzorging geef je haar de extra aandacht die het verdient.' },
+  { icon: <IconScissors />, title: 'Knippen & Stylen', desc: 'Van een strakke fade tot een klassieke coupe — Abdulla luistert naar wat jij wilt en levert elke keer het resultaat dat bij jou past.' },
+  { icon: <IconUsers />, title: 'Dames & Heren', desc: 'Zowel dames- als herenkapsels behoren tot het vakgebied van Abdulla. Iedereen is welkom bij Haven Salon.' },
+  { icon: <IconRazor />, title: 'Baardverzorging', desc: 'Een goed verzorgde baard maakt het geheel compleet. Abdulla shapt, trimt en finisht je baard tot in de puntjes.' },
+  { icon: <IconLeaf />, title: 'Behandelingen', desc: 'Met voedende maskers en gerichte hoofdhuidverzorging geef je haar de extra aandacht die het verdient.' },
 ]
 
 export default function About() {
