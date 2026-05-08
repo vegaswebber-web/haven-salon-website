@@ -24,7 +24,7 @@ function ScrollReveal() {
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('section'))
     sections.slice(1).forEach(s => s.classList.add('reveal'))
-    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid, .service-card, .gallery-item, .faq-item, .team-card, .review-card')
+    const cards = document.querySelectorAll('.pricing-card, .highlight-item, .team-card-large, .about-grid, .service-card, .gallery-item, .faq-item, .team-card')
     cards.forEach(c => c.classList.add('reveal'))
 
     const obs = new IntersectionObserver(entries => {

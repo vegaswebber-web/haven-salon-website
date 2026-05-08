@@ -35,7 +35,7 @@ export default function CookieConsent() {
             Ja, accepteren
           </button>
           <button className="cookie-decline" onClick={decline}>
-            Alleen noodzakelijk
+            Nee
           </button>
         </div>
       </div>

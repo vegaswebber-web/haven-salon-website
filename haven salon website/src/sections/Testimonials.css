@@ -10,75 +10,72 @@
 
 .testimonials-header .divider { margin: 16px auto 0; }
 
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  max-width: 900px;
+.google-review-card {
+  max-width: 520px;
   margin: 0 auto;
-}
-
-.review-card {
   background: var(--bg-3);
   border: 1px solid var(--border);
-  padding: 32px;
+  padding: 44px 40px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
-.review-card:hover {
-  border-color: rgba(201, 169, 110, 0.35);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+.google-review-card:hover {
+  border-color: rgba(201, 169, 110, 0.3);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
 }
 
-.review-stars {
+.google-review-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.google-review-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.google-review-label {
+  font-family: 'Volkhov', serif;
+  font-size: 1.1rem;
+  color: var(--heading);
+  font-weight: 600;
+}
+
+.google-stars {
   display: flex;
   gap: 3px;
-  color: var(--gold);
+  color: #FBBC05;
 }
 
-.review-text {
+.google-review-desc {
   font-size: 0.88rem;
   line-height: 1.75;
   color: var(--text-muted);
-  flex: 1;
-  font-style: italic;
+  max-width: 380px;
+  margin: 0;
 }
 
-.review-footer {
+.google-review-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.review-name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--heading);
-  letter-spacing: 0.5px;
-}
-
-.review-date {
-  font-size: 0.76rem;
+.google-review-note {
+  font-size: 0.72rem;
   color: var(--text-muted);
-}
-
-.reviews-cta {
-  text-align: center;
-  margin-top: 56px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-
-.reviews-cta p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  opacity: 0.6;
+  margin: 0;
+  letter-spacing: 0.3px;
 }
 
 .btn-outline {
@@ -99,8 +96,8 @@
   color: #0a0a0a;
 }
 
-@media (max-width: 700px) {
-  .reviews-grid { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
   .testimonials { padding: 70px 0; }
-  .review-card { padding: 24px; }
+  .google-review-card { padding: 32px 24px; }
+  .google-review-actions { flex-direction: column; align-items: center; }
 }
