@@ -41,9 +41,9 @@ const categories = [
     icon: <IconScissors />,
     items: [
       { label: 'Knippen + stylen (wax)', price: '€ 27,50' },
-      { label: 'Knippen + baard stylen of scheren', price: '€ 35,5' },
+      { label: 'Knippen + baard stylen of scheren', price: '€ 35,50' },
       { label: 'Knippen + wassen', price: '€ 29,50' },
-      { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,5' },
+      { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,50' },
     ],
   },
   {
@@ -57,7 +57,7 @@ const categories = [
     name: 'Jonge Heren',
     icon: <IconStar />,
     items: [
-      { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 19,5' },
+      { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 19,50' },
     ],
   },
   {
