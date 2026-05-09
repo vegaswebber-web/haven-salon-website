@@ -40,9 +40,9 @@ const categories = [
     name: 'Heren',
     icon: <IconScissors />,
     items: [
-      { label: 'Knippen + stylen (wax)', price: '€ 27' },
+      { label: 'Knippen + stylen (wax)', price: '€ 27,50' },
       { label: 'Knippen + baard stylen of scheren', price: '€ 35,5' },
-      { label: 'Knippen + wassen', price: '€ 29' },
+      { label: 'Knippen + wassen', price: '€ 29,50' },
       { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,5' },
     ],
   },
