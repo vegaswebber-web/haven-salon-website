@@ -96,7 +96,7 @@ export default function Contact() {
 
             <div className="contact-social">
               <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer" className="social-btn">Instagram</a>
-              <a href="https://www.google.com/maps/search/?api=1&query=Haven+Salon+Burgstraat+1+Volendam" target="_blank" rel="noreferrer" className="social-btn">Google Reviews</a>
+              <a href="https://www.google.com/maps/place/Haven+Salon/@52.4942643,5.076066,17z/data=!4m6!3m5!1s0x47c6056207d742a3:0x92a26ddfa75c4d4!8m2!3d52.4942643!4d5.076066!16s%2Fg%2F11nbw6zbl7" target="_blank" rel="noreferrer" className="social-btn">Google Reviews</a>
             </div>
           </div>
 
