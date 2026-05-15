@@ -16,7 +16,7 @@ function CloseBtn({ onClick }) {
 // Vul hier jouw Salonhub booking-URL in (via .env: VITE_SALONHUB_URL)
 // Voorbeeld: https://www.salonhub.nl/boek/haven-salon-volendam
 // ─────────────────────────────────────────────────────────────────────
-const SALONHUB_URL = import.meta.env.VITE_SALONHUB_URL || ''
+const SALONHUB_URL = 'https://afspraak.salonhub.nl/havensalon/edam'
 
 export default function BookingModal() {
   const { closeBooking } = useBooking()
