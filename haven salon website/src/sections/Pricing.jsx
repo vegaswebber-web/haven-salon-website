@@ -66,8 +66,7 @@ const categories = [
     name: 'Jonge Heren',
     icon: <IconStar />,
     items: [
-      { label: 'Knippen t/m 13 jaar',               price: '€ 15,00' },
-      { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 22,50' },
+      { label: 'Knippen t/m 13 jaar', price: '€ 22,50' },
     ],
   },
   {
@@ -77,7 +76,7 @@ const categories = [
       { label: 'Knippen (kort / medium haar)',  price: '€ 27,00' },
       { label: 'Knippen + föhnen (lang haar)',  price: '€ 45,00' },
       { label: 'Wenkbrouwen epileren',          price: '€ 15,00' },
-      { label: 'Wenkbrouwen epileren + verfen', price: '€ 22,00' },
+      { label: 'Wenkbrouwen epileren + verfen', price: '€ 23,50' },
       { label: 'Hele gezicht epileren',         price: '€ 25,00' },
     ],
   },
