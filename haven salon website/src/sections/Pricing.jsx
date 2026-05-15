@@ -50,6 +50,7 @@ const categories = [
     items: [
       { label: 'Knippen',                          price: '€ 27,50' },
       { label: 'Knippen + wassen',                 price: '€ 32,00' },
+      { label: 'Knippen + baard stylen of scheren', price: '€ 35,00' },
 { label: 'Knippen met tondeuse',             price: '€ 18,50' },
       { label: 'Kaal scheren',                     price: '€ 15,00' },
     ],
@@ -65,7 +66,7 @@ const categories = [
     name: 'Jonge Heren',
     icon: <IconStar />,
     items: [
-      { label: 'Knippen t/m 13 jaar', price: '€ 22,50' },
+      { label: 'Knippen t/m 13 jaar', price: '€ 19,50' },
     ],
   },
   {
