@@ -48,11 +48,11 @@ const categories = [
     name: 'Heren',
     icon: <IconScissors />,
     items: [
-      { label: 'Knippen',                          price: '€ 20,00' },
-      { label: 'Knippen + wassen',                 price: '€ 25,00' },
-      { label: 'Knippen + stylen (wax)',            price: '€ 27,50' },
-      { label: 'Knippen + baard stylen of scheren', price: '€ 35,00' },
-      { label: 'Kale Kop Tondeuse',                price: '€ 18,50' },
+      { label: 'Knippen',                          price: '€ 27,50' },
+      { label: 'Knippen + wassen',                 price: '€ 32,00' },
+      { label: 'Knippen + baard stylen of scheren', price: '€ 42,50' },
+      { label: 'Knippen met tondeuse',             price: '€ 18,50' },
+      { label: 'Kaal scheren',                     price: '€ 15,00' },
     ],
   },
   {
@@ -63,18 +63,10 @@ const categories = [
     ],
   },
   {
-    name: "Extra's",
-    icon: <IconPlus />,
-    items: [
-      { label: 'Wassen',        price: '€ 5,00' },
-      { label: 'Stylen met wax', price: '€ 7,50' },
-    ],
-  },
-  {
     name: 'Jonge Heren',
     icon: <IconStar />,
     items: [
-      { label: 'Knippen t/m 13 jaar',              price: '€ 15,00' },
+      { label: 'Knippen t/m 13 jaar',               price: '€ 15,00' },
       { label: 'Knippen + stylen (wax) t/m 13 jaar', price: '€ 22,50' },
     ],
   },
@@ -82,11 +74,11 @@ const categories = [
     name: 'Vrouwen',
     icon: <IconFlower />,
     items: [
-      { label: 'Knippen (kort / medium haar)',      price: '€ 27,00' },
-      { label: 'Knippen + föhnen (lang haar)',      price: '€ 45,00' },
-      { label: 'Wenkbrouwen epileren',              price: '€ 15,00' },
-      { label: 'Wenkbrouwen epileren + verfen',     price: '€ 22,00' },
-      { label: 'Hele gezicht epileren',             price: '€ 25,00' },
+      { label: 'Knippen (kort / medium haar)',  price: '€ 27,00' },
+      { label: 'Knippen + föhnen (lang haar)',  price: '€ 45,00' },
+      { label: 'Wenkbrouwen epileren',          price: '€ 15,00' },
+      { label: 'Wenkbrouwen epileren + verfen', price: '€ 22,00' },
+      { label: 'Hele gezicht epileren',         price: '€ 25,00' },
     ],
   },
 ]
