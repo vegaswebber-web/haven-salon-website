@@ -53,6 +53,7 @@ const categories = [
       { label: 'Knippen + baard stylen of scheren', price: '€ 35,00' },
 { label: 'Knippen met tondeuse',             price: '€ 18,50' },
       { label: 'Kaal scheren',                     price: '€ 15,00' },
+      { label: '65+ jaar knippen',                 price: '€ 25,00' },
     ],
   },
   {
