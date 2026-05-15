@@ -42,8 +42,8 @@ const categories = [
     items: [
       { label: 'Knippen + stylen (wax)', price: '€ 27,50' },
       { label: 'Knippen + baard stylen of scheren', price: '€ 35,50' },
-      { label: 'Knippen + wassen', price: '€ 29,50' },
-      { label: 'Alles één lengte / kaalscheren (GEEN overloop)', price: '€ 18,50' },
+      { label: 'Knippen + wassen', price: '€ 25,00' },
+      { label: 'Kale Kop Tondeuse', price: '€ 18,50' },
     ],
   },
   {

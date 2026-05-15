@@ -47,7 +47,7 @@ export default function Contact() {
                 </span>
                 <div>
                   <strong>Adres</strong>
-                  <p>Burgstraat 1, Volendam</p>
+                  <p>Brugstraat 1, Volendam</p>
                 </div>
               </div>
               <div className="contact-detail">

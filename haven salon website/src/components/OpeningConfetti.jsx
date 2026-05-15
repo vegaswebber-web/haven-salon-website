@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import confetti from 'canvas-confetti'
 
-const OPENING = new Date('2026-06-12T00:00:00')
+const OPENING = new Date('2026-06-13T00:00:00')
 const COLORS = ['#c9a84c', '#e0c97a', '#f5e6c0', '#ffffff', '#d4a843']
 
 export default function OpeningConfetti() {

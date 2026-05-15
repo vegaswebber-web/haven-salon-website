@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './TopBanner.css'
 
-const TARGET = new Date('2026-06-12T10:00:00+02:00').getTime()
+const TARGET = new Date('2026-06-13T10:00:00+02:00').getTime()
 function calcCd() {
   const d = TARGET - Date.now()
   if (d <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
@@ -40,7 +40,7 @@ export default function TopBanner() {
   return (
     <div className={`tb-wrap ${open ? 'tb-wrap--open' : 'tb-wrap--closed'}`}>
       <div className="tb-content">
-        <span className="tb-label">Opening 12 juni 2026</span>
+        <span className="tb-label">Opening 13 juni 2026</span>
 
         <div className="tb-cd">
           <Num value={cd.days}    label="Dagen" />

@@ -9,7 +9,7 @@ export default function ComingSoonPage() {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
-    const target = new Date('2026-06-12T00:00:00+02:00').getTime()
+    const target = new Date('2026-06-13T00:00:00+02:00').getTime()
     function tick() {
       const diff = target - Date.now()
       if (diff <= 0) {
@@ -73,7 +73,7 @@ export default function ComingSoonPage() {
         <div className="cs-info">
           <div className="cs-info-item">
             <span>📍</span>
-            <span>Burgstraat 1, Volendam</span>
+            <span>Brugstraat 1, Volendam</span>
           </div>
           <div className="cs-info-item">
             <span>📞</span>
@@ -86,7 +86,7 @@ export default function ComingSoonPage() {
         </div>
 
         <div className="cs-social">
-          <a href="https://instagram.com/abdula_kapper" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.instagram.com/haven_salon122/" target="_blank" rel="noreferrer">Instagram</a>
         </div>
       </div>
 
